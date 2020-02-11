@@ -99,5 +99,5 @@ Vuetofy : COmponetne MaterialDesign para Vue
 
 Link de como usar com Vuetify : https://vuetifyjs.com/pt-BR/customization/icons
 
-Usando MaterialDesignIcons. Link: https://material.io/resources/icons/?style=baseline
+Usando MaterialDesignIcons. Link: https://cdn.materialdesignicons.com/2.0.46/
 É necessário importar com npm, pois vem poucos itens e a maioria que vc quiser usar nao vai ter la com `npm install @mdi/font -D`

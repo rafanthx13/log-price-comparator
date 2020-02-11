@@ -25,19 +25,39 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!-- Inset Data -->
+        <v-list-item @click="go_to('/insert')">
+          <v-list-item-action>
+            <v-icon>mdi-plus-box-outline</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Inserir</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <!-- Search -->
+        <v-list-item @click="go_to('/search')">
+          <v-list-item-action>
+            <v-icon>mdi-magnify</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Pesquisar</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
 
     <!-- Header Bar on Top -->
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>LogPrice App</v-toolbar-title>
     </v-app-bar>
 
     <!-- Conteudo -->
     <v-content>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
+        <v-layout justify-center>
 
           <router-view></router-view>
 
@@ -71,3 +91,9 @@
 
   }
 </script>
+
+<style lang="scss" >
+.main-title {
+  text-align: center;
+}
+</style>
