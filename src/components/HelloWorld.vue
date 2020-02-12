@@ -6,7 +6,7 @@
       <v-list dense>
 
         <!-- Home -->
-        <v-list-item @click="go_to('/')">
+        <v-list-item @click="go_to('Home')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -16,7 +16,7 @@
         </v-list-item>
 
         <!-- About Me -->
-        <v-list-item @click="go_to('/aboutme')">
+        <v-list-item @click="go_to('About Me')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
@@ -26,7 +26,7 @@
         </v-list-item>
 
         <!-- Inset Data -->
-        <v-list-item @click="go_to('/insert')">
+        <v-list-item @click="go_to('Insert Main')">
           <v-list-item-action>
             <v-icon>mdi-plus-box-outline</v-icon>
           </v-list-item-action>
@@ -36,7 +36,7 @@
         </v-list-item>
 
         <!-- Search -->
-        <v-list-item @click="go_to('/search')">
+        <v-list-item @click="go_to('Search')">
           <v-list-item-action>
             <v-icon>mdi-magnify</v-icon>
           </v-list-item-action>
@@ -85,7 +85,7 @@
     methods: {
       // Não consegui por $router.push 'in_code' entao eupus aqui
       go_to(link_path) {
-        this.$router.push(link_path)
+        this.$router.push({name: link_path})
       }
     },
 
