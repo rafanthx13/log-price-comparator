@@ -11,6 +11,8 @@ import InsertMain from '../components/Insert/InsertMain.vue';
 import InsertProduct from '@/components/Insert/InsertProduct.vue';
 import InsertCity from '@/components/Insert/InsertCity.vue';
 import InsertShop from '@/components/Insert/InsertShop.vue';
+import InsertLog from '@/components/Log/InsertLog.vue';
+
 
 Vue.use(VueRouter)
 
@@ -29,6 +31,7 @@ export default new VueRouter ({
     { path: '/insert/shop', name: 'Insert Shop', component: InsertShop},
     { path: '/insert/product', name: 'Insert Product', component: InsertProduct},
     { path: '/search', name: "Search", component: SearchMain },
+    { path: '/log', name: 'Log', component: InsertLog}
   ]
 
 })

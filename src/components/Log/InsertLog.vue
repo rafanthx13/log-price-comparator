@@ -3,7 +3,7 @@
 
     <h1 class="main-title">INSERT CITY</h1>
 
-    <v-container fluid style="text-align:center">
+     <v-container fluid style="text-align:center">
 
       <v-card name="form-district" class="pb-7" elevation="6">
         <ValidationObserver ref="observer" v-slot="{ validate, handleSubmit }">
@@ -17,15 +17,19 @@
 
             <!-- Card Content -->
             <v-card-text primary-title style="justify-content:center">
-              <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
-                <v-text-field label="Cidade" v-model="district.city" :error-messages="errors" required></v-text-field>
+              <ValidationProvider v-slot="{ errors }" name="city" rules="required">
+                <v-select :items="items.city" v-model="logData.city" label="Cidade" :error-messages="errors" outlined required></v-select>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
-                <v-text-field label="Estado" v-model="district.state" :error-messages="errors" required></v-text-field>
+              <ValidationProvider v-slot="{ errors }" name="shop" rules="required">
+                <v-select :items="items.shop" v-model="logData.shop" label="Loja" :error-messages="errors" outlined required></v-select>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
-                <v-text-field label="Pais" v-model="district.country" :error-messages="errors" required></v-text-field>
+              <ValidationProvider v-slot="{ errors }" name="product" rules="required">
+                <v-select :items="items.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required></v-select>
               </ValidationProvider>
+              <ValidationProvider v-slot="{ errors }" name="city" rules="required">
+                <v-text-field label="Preço" v-model.lazy="logData.price" :error-messages="errors" v-money="myMaskMoney" required></v-text-field>
+              </ValidationProvider>
+              
             </v-card-text>
 
             <!-- Card Buttons -->
@@ -44,17 +48,21 @@
 </template>
 
 <script>
+  
   import {
     required,
     max
   } from 'vee-validate/dist/rules'
+
   import {
     extend,
     ValidationObserver,
     ValidationProvider,
     setInteractionMode
   } from 'vee-validate'
-  import City from '../../api/City'
+
+  import Log from '../../api/Log'
+  import {VMoney} from 'v-money'
 
   setInteractionMode('eager')
 
@@ -75,6 +83,8 @@
       ValidationObserver,
     },
 
+    directives: {money: VMoney},
+
     data() {
       return {
         district: {
@@ -82,7 +92,25 @@
           state: '',
           country: ''
         },
+        items: {
+          city: ['Uberlândia'],
+          shop: ['loja-test'],
+          product: ['Leite'],
+        },
+        logData: {
+          city: '',
+          shop: '',
+          product: '',
+          price: '',
+        },
         valid: true,
+        myMaskMoney: {
+          decimal: ',',
+          thousands: '.',
+          prefix: 'R$ ',
+          precision: 2,
+          masked: false /* doesn't work with directive */
+        },
       }
     },
 
@@ -93,8 +121,9 @@
         // tem como retorno 'resul' :: Boolean da validação
         this.$refs.observer.validate()
           .then(result => {
+            console.log(this.logData)
             if (result) {
-              City.post(this.district).then(result => {
+              Log.post(this.logData).then(result => {
                   console.log(result.data)
                 })
                 .catch(err => {
@@ -124,6 +153,7 @@
     }
   }
 </script>
+
 
 <style lang="scss" scoped>
 

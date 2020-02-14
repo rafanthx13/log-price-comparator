@@ -35,6 +35,17 @@
           </v-list-item-content>
         </v-list-item>
 
+
+        <!-- Log -->
+        <v-list-item @click="go_to('Log')">
+          <v-list-item-action>
+            <v-icon>mdi-cart-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>+ Log</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <!-- Search -->
         <v-list-item @click="go_to('Search')">
           <v-list-item-action>
@@ -95,5 +106,9 @@
 <style lang="scss" >
 .main-title {
   text-align: center;
+}
+
+.title-form {
+  font-size: 1.3rem !important;
 }
 </style>
