@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "moment": "^2.24.0",
     "v-money": "^0.8.1",
     "vee-validate": "^3.2.4",
     "vue": "^2.6.11",

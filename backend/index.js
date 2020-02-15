@@ -21,6 +21,10 @@ app.get('/city', function (req, res) {
   exec_mysql_query('SELECT * FROM city', res);
 });
 
+app.get('/city/city', function (req, res) {
+  exec_mysql_query('SELECT city FROM city', res);
+});
+
 app.post('/city', (req, res) =>{
   const city = req.body.city;
   const state = req.body.state;
@@ -30,6 +34,10 @@ app.post('/city', (req, res) =>{
 
 app.get('/shop', function (req, res) {
   exec_mysql_query('SELECT * FROM shop', res);
+});
+
+app.get('/shop/name', function (req, res) {
+  exec_mysql_query('SELECT name FROM shop', res);
 });
 
 app.post('/shop', (req, res) =>{
@@ -48,6 +56,10 @@ app.get('/product', function (req, res) {
   exec_mysql_query('SELECT * FROM product', res);
 });
 
+app.get('/product/name', function (req, res) {
+  exec_mysql_query('SELECT name FROM product', res);
+});
+
 app.post('/product', (req, res) =>{
   const name = req.body.name;
   const type = req.body.type;
@@ -55,6 +67,21 @@ app.post('/product', (req, res) =>{
   const value_query = ` VALUES('${name}','${type}');`
   exec_mysql_query(def_query + value_query, res);
 });
+
+app.post('/log', (req, res) =>{
+  const product = req.body.product;
+  const price = req.body.price;
+  const shop = req.body.shop;
+  const city = req.body.city;
+  const date = req.body.date;
+  const def_query =  'INSERT INTO log(product, price, shop, city, date)'
+  const value_query = ` VALUES('${product}','${price}', '${shop}', '${city}', '${date}');`
+  exec_mysql_query(def_query + value_query, res);
+});
+
+//INSERT INTO `price_log_bd`.`log` (`log_id`, `product`, `price`, `shop`, `city`, `date`)
+//  VALUES ('2', 'asfa', '4.5543', 'fasfa', 'dgdggd', '30-02-1998');
+
 
 // Lidar com Erros 404 (Nâo encontrado).
 // POR DEFINIÇÂO, DEVE SER O ÚLTIMO 'USE'.

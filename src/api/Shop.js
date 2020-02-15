@@ -14,6 +14,10 @@ export default class {
     return Http.post('http://localhost:3000/shop', body);
   }
 
+  static getShopsNames(){
+    return Http.get('http://localhost:3000/shop/name');
+  }
+
 }
 
 // INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 

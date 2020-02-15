@@ -108,6 +108,14 @@ INstalar MYSQL WORKBENCH e acessalo.
 
 No ubuntu é so pesquisar no simbolo do unbutu
 
+MYS QL
+
+no  ubnutu a maquina ja liga com o processo do mysql raodano. Se voce tirar, pra colocar de voltae funcionar use o comando:
+
+service mysql start
+
+e veja se apbriu o processo mysqld
+
 # Express
 
 Precisa usar cors no express

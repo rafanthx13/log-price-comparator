@@ -19,6 +19,11 @@ export default class {
     return Http.post('http://localhost:3000/city', body);
   }
 
+  static getCities(){
+    console.log("rerere")
+    return Http.get('http://localhost:3000/city/city')
+  }
+
 }
 
 /*
