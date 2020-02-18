@@ -40,6 +40,11 @@ app.get('/shop/name', function (req, res) {
   exec_mysql_query('SELECT name FROM shop', res);
 });
 
+app.get('/shop/city', function (req, res) {
+  console.log(req.query.city_name)
+  exec_mysql_query(`SELECT name FROM shop WHERE city = '${req.query.city_name}'`, res);
+});
+
 app.post('/shop', (req, res) =>{
   const name = req.body.name;
   const cep = req.body.cep;
@@ -66,6 +71,10 @@ app.post('/product', (req, res) =>{
   const def_query =  'INSERT INTO product(name, type)'
   const value_query = ` VALUES('${name}','${type}');`
   exec_mysql_query(def_query + value_query, res);
+});
+
+app.get('/log', (req, res) => {
+  exec_mysql_query('SELECT * FROM log', res);
 });
 
 app.post('/log', (req, res) =>{

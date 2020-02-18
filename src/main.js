@@ -4,6 +4,9 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import router from './router'
 
+import VueApexCharts from "vue-apexcharts";
+Vue.component("apexchart", VueApexCharts);
+
 // import axios from 'axios'
 // import VueAxios from 'vue-axios'
 

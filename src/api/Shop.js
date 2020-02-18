@@ -18,6 +18,11 @@ export default class {
     return Http.get('http://localhost:3000/shop/name');
   }
 
+  static getShopsByCity(city_name){
+    console.log('http://localhost:3000/shop/city?city_name=' + city_name)
+    return Http.get('http://localhost:3000/shop/city?city_name=' + city_name);
+  }
+
 }
 
 // INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 

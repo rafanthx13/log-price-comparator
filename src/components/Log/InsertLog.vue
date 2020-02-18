@@ -187,7 +187,7 @@
   watch: {
     'logData.city': function () {
       if(this.logData.city){
-        Shop.getShopsNames().then(result => {
+        Shop.getShopsByCity(this.logData.city).then(result => {
           if(result){
             let ShopsNamesList = this.getListOne('name', result.data)
             console.log(ShopsNamesList)
@@ -261,7 +261,7 @@
         // tem como retorno 'resul' :: Boolean da validação
         this.$refs.observer.validate()
           .then(result => {
-            this.logData.date = moment().format("YYYY-MM-DD HH:mm:ss")
+            this.logData.date = moment().format("YYYY-MM-DD")
             this.logData.price = this.formatMoneyToSend(this.money)
             console.log(this.logData)
             if (result) {

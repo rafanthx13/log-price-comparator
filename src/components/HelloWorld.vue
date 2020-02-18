@@ -5,7 +5,7 @@
     <v-navigation-drawer v-model="drawer" app width="150">
       <v-list dense>
 
-        <!-- Home -->
+        <!-- Home . -->
         <v-list-item @click="go_to('Home')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
