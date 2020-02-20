@@ -16,6 +16,7 @@ module.exports = function(sqlQry, res){
         res.json(error);
       } else {
         res.json(results);
+	console.log(results);
         connection.end();
       }
     });

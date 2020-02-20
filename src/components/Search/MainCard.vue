@@ -1,53 +1,43 @@
 <template>
   <div class="">
-    <v-card name="form-district" class="pb-7" elevation="6">
-      <v-card-title style="display: inline-block;">
-        <span class="headline mb-0 title-form">{{ product }} LEITE em UBERLANDIA {{ city }}</span>
-      </v-card-title>
-      <v-card-text primary-title style="justify-content:center">
-        <!-- <br><br> -->
-        <!-- {{ groupBy }} -->
-        <!-- <br><br> -->
-        <!-- KKK {{ this.minprice }} -->
-        <!-- <br><br> -->
-        <!-- ==> {{ minpp }} -->
-        <!-- <br><br> -->
-        <!-- {{ orderBy }} Tem Array de JSON ordenado pelo menor preço -->
 
-        <!-- {{dataInfo}} -->
+    <v-card name="form-district" class="pb-7" elevation="6">
+
+      <!-- Card Title -->
+      <v-card-title style="display: inline-block;">
+        <span class="headline mb-0 title-form">{{ product }} em {{ city }}</span>
+      </v-card-title>
+
+      <!-- Card Text -->
+      <v-card-text primary-title style="justify-content:center">
+
+        <!-- {{ this.logs }}  -->
 
         <div class="row">
 
           <div class="col-md-12" v-if="this.dataInfo.length <= this.dataInfo.minToSplit">
-            <ul id="example-1">
+            <ul>
               <li v-for="item in orderBy" v-bind:key="item.shop">
                 {{ item.ranking }} - {{ item.price }} de {{ item.shop }} a {{ item.date }} dias
-                <!-- a.diff(b, 'days') -->
               </li>
             </ul>
           </div>
 
+          <div class="col-md-6" v-if="this.dataInfo.length > this.dataInfo.minToSplit">
+            <ul>
+              <li v-for="item in orderBy.slice(0, this.splitnumber())" v-bind:key="item.shop">
+                {{ item.ranking }} - {{ item.price }} de {{ item.shop }} a {{ item.date }} dias
+              </li>
+            </ul>
+          </div>
 
-            <div class="col-md-6" v-if="this.dataInfo.length > this.dataInfo.minToSplit">
-              <ul id="example-1">
-                <li v-for="item in orderBy.slice(0, this.splitnumber())" v-bind:key="item.shop">
-                  {{ item.ranking }} - {{ item.price }} de {{ item.shop }} a {{ item.date }} dias
-                  <!-- a.diff(b, 'days') -->
-                </li>
-              </ul>
-            </div>
-
-            <div class="col-md-6" v-if="this.dataInfo.length > this.dataInfo.minToSplit">
-              <ul id="example-1">
-                <li v-for="item in orderBy.slice( - this.splitnumber() )" v-bind:key="item.shop">
-                  {{ item.ranking }} -{{ item.price }} de {{ item.shop }} a {{ item.date }} 
-                  <!-- a.diff(b, 'days') -->
-                </li>
-              </ul>
-            </div>
-
-
-          
+          <div class="col-md-6" v-if="this.dataInfo.length > this.dataInfo.minToSplit">
+            <ul>
+              <li v-for="item in orderBy.slice( - this.splitnumber() )" v-bind:key="item.shop">
+                {{ item.ranking }} - {{ item.price }} de {{ item.shop }} a {{ item.date }} dias
+              </li>
+            </ul>
+          </div>
 
         </div>
 
@@ -66,13 +56,13 @@
     props: {
       product: {
         type: String,
-        default: ''
+        default: 'Leite'
       },
       city: {
         type: String,
-        default: ''
+        default: 'UDI'
       },
-      logs: {
+      mainLogs: {
         type:  Array,
         default: () => []
       }
@@ -88,8 +78,10 @@
       };
     },
 
-
     computed: {
+      logs() {
+        return JSON.parse(JSON.stringify(this.mainLogs));
+      },
       groupBy() {
         return this.logs ? this.groupByShop(this.logs) : []
       },
@@ -99,7 +91,6 @@
       orderBy() {
         return this.minpp ? this.orderByPriceJSONsAsc(this.minpp) : []
       },
-
     },
 
     methods:{
@@ -174,9 +165,10 @@
       },
 
       maskMoney(price){
-          let currency = price.toFixed(2).split('.');
-          currency[0] = "R$ " + currency[0].split(/(?=(?:...)*$)/).join('.');
-          return currency.join(',');
+        let currency = price.toFixed(2).split('.');
+        currency[0] = "R$ " + currency[0].split(/(?=(?:...)*$)/).join('.');
+        return currency.join(',');
+        // return price
       },
 
       round_two(price){
@@ -190,7 +182,7 @@
         if(l <= this.dataInfo.minToSplit){
           return  l - 1
         } else {
-          console.log("ceil len/2", Math.ceil(l/2))
+          // console.log("ceil len/2", Math.ceil(l/2))
           return Math.ceil(l/2)
         }
       }
@@ -203,5 +195,10 @@
 </script>
 
 <style lang="scss" scoped>
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
 
 </style>

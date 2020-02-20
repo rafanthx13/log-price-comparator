@@ -14,6 +14,11 @@ export default class {
     return Http.post('http://localhost:3000/log', body);
   }
 
+  static getPosted(body){
+    // console.log("dentro do get do LOG", body)
+    return Http.post('http://localhost:3000/log/get', body);
+  }
+
 }
 
 // INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 

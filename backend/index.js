@@ -4,6 +4,7 @@ var app = express();
 // MidleWares
 const cors = require('cors')
 const bodyParser = require('body-parser');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
@@ -75,6 +76,15 @@ app.post('/product', (req, res) =>{
 
 app.get('/log', (req, res) => {
   exec_mysql_query('SELECT * FROM log', res);
+});
+
+app.post('/log/get', (req, res) => {
+  console.log("*** ==", req.body);
+  const product = req.body.product;
+  const city    = req.body.city;
+  const query = `SELECT * FROM log WHERE product = '${product}' AND city = '${city}';`;
+  console.log("==>", query);
+  exec_mysql_query(query, res);
 });
 
 app.post('/log', (req, res) =>{

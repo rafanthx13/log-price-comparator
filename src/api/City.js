@@ -20,7 +20,6 @@ export default class {
   }
 
   static getCities(){
-    console.log("rerere")
     return Http.get('http://localhost:3000/city/city')
   }
 
