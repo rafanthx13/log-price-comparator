@@ -27,7 +27,6 @@
             </v-list-item-content>
             <!-- <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar> -->
           </v-list-item>
-
         </v-card>
 
         <v-card max-width="344" outlined @click="go_to('Insert Product')" class="mx-10">

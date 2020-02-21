@@ -79,11 +79,9 @@ app.get('/log', (req, res) => {
 });
 
 app.post('/log/get', (req, res) => {
-  console.log("*** ==", req.body);
   const product = req.body.product;
   const city    = req.body.city;
   const query = `SELECT * FROM log WHERE product = '${product}' AND city = '${city}';`;
-  console.log("==>", query);
   exec_mysql_query(query, res);
 });
 

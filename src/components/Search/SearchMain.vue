@@ -4,10 +4,8 @@
 
     <!-- Form Container  . -->
     <v-container fluid style="text-align:center">
-      <ValidationObserver ref="observer" v-slot="{ validate, handleSubmit }">
-        <form @submit.prevent="handleSubmit(onSubmit)">
-
-          <!-- Form Card  -->
+      <ValidationObserver ref="observer">
+        <form>
           <v-card name="form-district" class="pb-7" elevation="6">
 
             <!-- Card Title -->
@@ -18,21 +16,14 @@
 
             <!-- Card Content -->
             <v-card-text primary-title style="justify-content:center; padding-bottom: 0;">
-              <v-row>
+              <v-row style="display: inline-flex;">
                 <ValidationProvider v-slot="{ errors }" name="city" rules="required">
                   <v-select class="form-item" :items="formItems.city" v-model="logData.city" label="Cidade" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
-               <!--  
-                <ValidationProvider v-slot="{ errors }" name="shop" rules="required">
-                  <v-select class="form-item" :items="formItems.shop" v-model="logData.shop" label="Loja" :error-messages="errors" outlined required></v-select>
-                </ValidationProvider> 
-              -->
                 <ValidationProvider v-slot="{ errors }" name="product" rules="required">
                   <v-select class="form-item" :items="formItems.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
                 <v-btn class="my-3 mr-3" @click="submit">Pesquisar</v-btn>
-                <v-btn class="my-3 mr-3" @click="clear">Limpar</v-btn>
-                <v-btn class="my-3 mr-3" @click="clear">Limpar</v-btn>
                 <v-btn class="my-3 mr-3" @click="clear">Limpar</v-btn>
               </v-row>
             </v-card-text>
@@ -49,74 +40,36 @@
 
         <!-- MainCard Component  -->
         <div class="col-md-8">
-
-          <!-- <v-card name="form-district" class="pb-7" elevation="6">
-            <v-card-title style="display: inline-block;">
-              <span class="headline mb-0 title-form">TITULO</span>
-            </v-card-title>
-          </v-card> -->
-
           <MainCard :city="this.logData.city" :product="this.logData.product" :mainLogs="this.logs"></MainCard>
-
         </div>
 
 
         <!-- StatisticCard Component  -->
         <div class="col-md-4">
-
-          <!-- <v-card name="form-district" class="pb-7" elevation="6">
-            <v-card-title style="display: inline-block;">
-              <span class="headline mb-0 title-form">TITULO</span>
-            </v-card-title>
-          </v-card> -->
-
           <StatisticCard :mylogs="this.cloneJSON(this.logs)"></StatisticCard>
-
         </div>
     </div>
     </v-container>
 
-    <!-- 
-      <div class="border-2 rounded-lg py-4 px-1 shadow-lg mb-8">
-        <h1 class="text-xl font-semibold">Basic Chart</h1>
-        <apexchart height="200" type="line" :options="chartOptionsRe" :series="series"/>
-      </div>
-    </v-container> -->
-
-    <!-- v-for="item in orderBy.slice(0, this.splitnumber())" v-bind:key="item.shop" -->
     <v-container v-for="(value, key) in this.logsByShop" v-bind:key="key">
       <div class="border-2 rounded-lg py-4 px-1 shadow-lg mb-8">
-        <!-- {{ value }} -->
         <h1 class="text-xl font-semibold">{{ key }}</h1>
         <apexchart height="200" type="line" :options="value.chartOptions" :series="value.series_price"/>
       </div>
     </v-container>
-
-    <!-- {{ this.logsByShop }} -->
-
-
-   
 
   </div>
 </template>
 
 <script>
 
-  import {
-    required,
-    max
-  } from 'vee-validate/dist/rules'
+  import { required, max } from 'vee-validate/dist/rules'
 
-  import {
-    extend,
-    ValidationObserver,
-    ValidationProvider,
-    setInteractionMode
-  } from 'vee-validate'
+  import { extend, ValidationObserver,
+    ValidationProvider, setInteractionMode } from 'vee-validate'
 
   import Log from '../../api/Log'
   import City from '../../api/City'
-  // import Shop from '../../api/Shop'
   import Product from '../../api/Product'
 
   import {VMoney} from 'v-money'
@@ -124,8 +77,6 @@
 
   import MainCard from './MainCard'
   import StatisticCard from './StatisticCard'
-
-  // import VueApexCharts from "vue-apexcharts";
 
   setInteractionMode('eager')
 
@@ -148,7 +99,7 @@
       StatisticCard,
     },
 
-    directives: {money: VMoney},
+    directives: { money: VMoney },
 
     data() {
       return {
@@ -296,36 +247,10 @@
       groupBy() {
         return this.logs ? this.groupByShop(this.logs) : []
       },
-      // minpp() {
-      //   return this.groupBy ? this.minPrices(this.groupBy) : []
-      // },
-      // orderBy() {
-      //   return this.minpp ? this.orderByPriceJSONsAsc(this.minpp) : []
-      // },
     },
 
     watch: {
-      // 'logData.city': function () {
-      //   if(this.logData.city){
-      //     Shop.getShopsByCity(this.logData.city).then(result => {
-      //       if(result){
-      //         let ShopsNamesList = this.getListOne('name', result.data)
-      //         console.log(ShopsNamesList)
-      //         this.formItems.shop = ShopsNamesList
-      //       } else {
-      //         console.log("fail 441")
-      //          this.logData.shop = []
-      //       }
-      //     })
-      //     .catch(err => {
-      //       console.log(err)
-      //       console.log("fail 331")
-      //       this.logData.shop = []
-      //     })
-      //   } else {
-      //     this.formItems.shop = []
-      //   }
-      // },
+
       'logData.city': function(){
         if(this.logData.city){
           Product.getProductsNames().then(result => {
@@ -351,19 +276,17 @@
 
     created(){
 
-      City.getCities()
-        .then(result => {
-          if(result){
-            this.formItems.city = this.getListOne('city', result.data)
-            // console.log(this.getListOne('city', result.data))
-          } else {
-            console.log("fail 442")
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          console.log("fail 332")
-        })
+      City.getCities().then(result => {
+        if(result){
+          this.formItems.city = this.getListOne('city', result.data)
+          // console.log(this.getListOne('city', result.data))
+        } else {
+          console.log("fail 442")
+        }
+      }).catch(err => {
+        console.log(err)
+        console.log("fail 332")
+      })
 
     },
 
@@ -371,7 +294,7 @@
 
       submit() {
         // Metodo do componente que retorna um Promisse que
-        // tem como retorno 'resul' :: Boolean da validação
+        // tem como retorno 'result' :: Boolean da validação
         this.$refs.observer.validate()
           .then(result => {
             this.logData.date = moment().format("YYYY-MM-DD HH:mm:ss")
@@ -399,10 +322,6 @@
         this.formItems.shop = null
         this.formItems.product = null
         this.$refs.observer.reset()
-      },
-
-      onSubmit() {
-        alert('Form has been submitted!');
       },
 
       // Pega um array de Um mesmo Ojeto JSON e retorno só os elementos
@@ -444,6 +363,7 @@
     },
 
   }
+
 </script>
 
 <style lang="scss" scoped>
@@ -463,45 +383,3 @@ h1 {
 }
 
 </style>
-
-<!--  <v-container>
-      <div class="row">
-
-        <div class="col-md-6">
-          <v-card name="form-district" class="pb-7" elevation="6">
-            <v-card-title style="display: inline-block;">
-              <span class="headline mb-0 title-form">TITULO GRÁFICO</span>
-            </v-card-title>
-            <v-card-text primary-title style="justify-content:center">
-              <div class="row">
-                <div class="col-md-4">
-                  ESTATÍSTICAS
-                </div>
-                <div class="col-md-8">
-                  GRÁFICO
-                </div>
-              </div>
-            </v-card-text>
-          </v-card>
-        </div>
-
-        <div class="col-md-6">
-          <v-card name="form-district" class="pb-7" elevation="6">
-            <v-card-title style="display: inline-block;">
-              <span class="headline mb-0 title-form">TITULO GRÁFICO</span>
-            </v-card-title>
-            <v-card-text primary-title style="justify-content:center">
-              <div class="row">
-                <div class="col-md-4">
-                  ESTATÍSTICAS
-                </div>
-                <div class="col-md-8">
-                  GRÁFICO
-                </div>
-              </div>
-            </v-card-text>
-          </v-card>
-        </div>
-
-      </div>
-    </v-container> -->

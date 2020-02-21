@@ -111,4 +111,8 @@
 .title-form {
   font-size: 1.3rem !important;
 }
+
+.swal-footer {
+  text-align: center;
+}
 </style>
