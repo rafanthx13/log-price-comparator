@@ -31,8 +31,6 @@
           </li>
         </ul>
         
-        <!-- {{ this.oneArray }} -->
-
       </v-card-text>
 
     </v-card>
@@ -50,13 +48,6 @@ export default {
       default: () => []
     },
   },
-
-  // data(){
-  //   return {
-  //     groupBy: ,
-  //     // oneArray: this.getOneArrayOfPrice(this.groupBy)
-  //   }
-  // },
 
   computed: {
 
@@ -95,9 +86,9 @@ export default {
           }, 0) / (data.length - 1));
         };
         let standD =  getSD(this.oneArray)
-        return this.round_two(standD)
+        return Math.round(standD * 100) / 100 // arredondar 2 casa
       } else {
-        return ''
+        return '0'
       }
     },
 
@@ -107,25 +98,18 @@ export default {
 
     getOneArrayOfPrice(logs){
       let aList = []
-      // console.log(logs);
       for(let index in logs){
-        // console.log(index)
-        // console.log(logs[index])
         for(let i in logs[index]){
           aList.push(logs[index][i].price)
         }
-        // aList.push(logs[index].price)
       }
       return aList
     },
 
     groupByShop(logs){
-      // Recebe todos os logs e agrupa num obj com cada chave uma loja
-      // console.log(logs);
       let aDict = {}
       for( let index in logs ){
         let aShop = logs[index].shop
-        // console.log(aShop, "---")
         if(!aDict[aShop]){
           aDict[aShop] = []
         }
@@ -138,10 +122,6 @@ export default {
       let currency = price.toFixed(2).split('.');
       currency[0] = "R$ " + currency[0].split(/(?=(?:...)*$)/).join('.');
       return currency.join(',');
-    },
-
-    round_two(price){
-      return Math.round(price * 100) / 100 // arredondar 2 casa
     },
 
   },

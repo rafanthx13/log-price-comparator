@@ -58,7 +58,7 @@ import { extend, ValidationObserver,
   ValidationProvider, setInteractionMode } from 'vee-validate'
 import Shop from '../../api/Shop'
 import axios from 'axios'
-import {mask} from 'vue-the-mask'
+import { mask } from 'vue-the-mask'
 
 setInteractionMode('eager')
 
@@ -69,7 +69,7 @@ extend('required', {
 
 extend('max', {
   ...max,
-  message: 'O campo não pode ser maior que 30',
+  message: 'O campo não pode ser maior que {length}',
 })
 
 export default {
@@ -120,7 +120,7 @@ export default {
     },
 
     clear() {
-      this.shopData.shop = ''
+      this.shopData.name = ''
       this.shopData.number = ''
       this.shopData.cep = ''
       this.shopData.street = ''
@@ -139,14 +139,24 @@ export default {
             this.shopData.neighbor = endereco.data.bairro;
             this.shopData.city = endereco.data.localidade;
           } else {
-            console.error("Erro na API de CEP")
+            this.errorCEP()
           }
         })
-        .catch((err) => {
-          console.error(err)
+        .catch( () => {
+          this.errorCEP()
         });
       }
     },
+
+    errorCEP(){
+      // TODO: Mudar para notificação mais simples
+      this.$swal({
+        title: "Falha!",
+        text: "Erro ao acessar API de CEP",
+        icon: "error",
+        button: "Ok!",
+      });
+    }
 
   }
 

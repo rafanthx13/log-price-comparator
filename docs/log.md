@@ -116,6 +116,11 @@ service mysql start
 
 e veja se apbriu o processo mysqld
 
+exec:
+
+systemctl status mysql.service
+
+
 # Express
 
 Precisa usar cors no express
