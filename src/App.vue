@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-      <HelloWorld></HelloWorld>
+      <router-view></router-view>
   </div>
 </template>
 
 
 
 <script>
-import HelloWorld from './components/HelloWorld'
+
 
 export default {
 	
-	components: { HelloWorld },
+	
 
 }
 
