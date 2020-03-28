@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import MainLayout from '../components/Layout/MainLayout.vue'
 
 import Login from '../components/Login/Login.vue'
+import Register from '../components/Login/Register.vue'
 
 import Home from '../components/Home'
 import AboutMe from '../components/AboutMe'
@@ -28,11 +29,11 @@ Vue.use(VueRouter)
 //  Vai funcionar com o children pois o children é usado quando se tem router-vrei detrno de router-view
 // Assim, "Login nâo tem o latout de MainLayout"
 
-export default new VueRouter ({
+let router = new VueRouter ({
   mode: 'history',
   // linkActiveClass: 'active',
   routes: [
-    { path: '/app/', component: MainLayout, redirect: '/app/home', children: 
+    { path: '/app/', component: MainLayout, redirect: '/home', children: 
       [
         { path: '/home', name: "Home", component: Home },
         { path: '/aboutme', name: "About Me", component: AboutMe},
@@ -43,17 +44,24 @@ export default new VueRouter ({
         { path: '/search', name: "Search", component: SearchMain },
         { path: '/log', name: 'Log', component: InsertLog}
         
-      ]
+      ],
+      meta: { 
+        requiresAuth: true
+      },
     },
     {
       path: '/',
-      redirect: '/app'
+      redirect: '/home'
     },
     {
       path: '/login',
       name: 'Login',
       component: Login,
-
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register,
     }
     // { path: '/home', name: "Home", component: Home },
     // { path: '/aboutme', name: "About Me", component: AboutMe},
@@ -65,7 +73,41 @@ export default new VueRouter ({
     // { path: '/log', name: 'Log', component: InsertLog}
   ]
 
-})
+});
+
+// REgula aonde vai executar algo antes de entrar
+// router.beforeEach((to, from, next) => {
+//   if(to.matched.some(record => record.meta.requiresAuth)) {
+//     if (localStorage.getItem('jwt') == null) {
+//       next({
+//         path: '/login',
+//         params: { nextUrl: to.fullPath }
+//       })
+//     } else {
+//       let user = JSON.parse(localStorage.getItem('user'))
+//       if(to.matched.some(record => record.meta.is_admin)) {
+//         if(user.is_admin == 1){
+//             next()
+//         }
+//         else{
+//             next({ name: 'userboard'})
+//         }
+//       }
+//       else {
+//         next()
+//       }
+//     }
+//   } else if(to.matched.some(record => record.meta.guest)) {
+//       if(localStorage.getItem('jwt') == null){
+//           next()
+//       }
+//       else{
+//           next({ name: 'userboard'})
+//       }
+//     }else {
+//     next() 
+//   }
+// })
 
 
 /*
@@ -125,3 +167,4 @@ let profileMenu = {
 };
 */
 
+export default router

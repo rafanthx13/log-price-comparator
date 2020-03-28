@@ -1,18 +1,25 @@
 var express = require('express');
 var app = express();
 
-// MidleWares
+// MidleWares.
 const cors = require('cors')
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const bcryptNumber = 8;
+
+// ENV.
+const { PORT, API_SECRET } = require("./env/env_config.js");
+const port = PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
-
-
-// BD Connection
+// BD Connection.
 var exec_mysql_query = require('./config/mysql_connection');
+var checkPassword = require('./config/checkPassword');
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -66,6 +73,49 @@ app.get('/product/name', function (req, res) {
   exec_mysql_query('SELECT name FROM product', res);
 });
 
+
+
+
+
+
+// Apenas Registra
+app.post('/register', function(req, res) {
+  const saltRounds = 10
+  const salt = bcrypt.genSaltSync(saltRounds)
+  let user_name = req.body.user_name;
+  let email = req.body.email;
+  let password = bcrypt.hashSync(req.body.password, salt);
+  console.log(password);
+  let user_type = req.body.user_type || '';
+
+  let query = ` INSERT INTO user (user_name, email, password, user_type)
+    VALUES ( '${user_name}', '${email}', '${password}', '${user_type}');`
+  exec_mysql_query(query, res);
+  
+});
+
+// Recupera o token apos logar
+app.post('/login', function(req, res) {
+  let user_name = req.body.user_name;
+  let password = req.body.password
+
+  checkPassword(user_name, password, API_SECRET, res) 
+
+  // Ta gerando uma senha diferente toda hora
+  // let password = bcrypt.hashSync(req.body.password, 8)
+
+});
+
+
+
+
+
+
+
+
+
+
+
 app.post('/product', (req, res) =>{
   const name = req.body.name;
   const type = req.body.type;
@@ -106,9 +156,14 @@ app.use(function(req, res, next) {
   res.status(404).send('Sorry cant find that!');
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!..');
+
+app.listen(port, function () {
+  console.log('App listening on port ' + port);
 });
+
+function checkPassword(password){
+
+}
 
 
 
@@ -147,5 +202,7 @@ app.use('/', router);
 app.listen(port);
 console.log('API funcionando!');
 */
+
+
 
 

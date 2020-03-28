@@ -5,6 +5,13 @@ import vuetify from './plugins/vuetify';
 import router from './router'
 import VueSwal from 'vue-swal'
 
+// import Axios from 'axios'
+// Vue.prototype.$http = Axios;
+// const token = localStorage.getItem('token')
+// if (token) {
+//   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+// }
+
 Vue.use(VueSwal)
 
 import VueApexCharts from "vue-apexcharts";

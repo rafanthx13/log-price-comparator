@@ -205,11 +205,11 @@ export default {
     },
 
     clear() {
-      this.logData.city = ''
-      this.logData.shop = ''
+      // this.logData.city = ''
+      // this.logData.shop = ''
       this.logData.product = null
       this.logData.price = null
-      this.$refs.observer.reset()
+      // this.$refs.observer.reset()
     },
 
     // Pega um array de Um mesmo Ojeto JSON e retorno só os elementos

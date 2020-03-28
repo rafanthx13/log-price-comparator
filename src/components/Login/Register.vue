@@ -1,50 +1,53 @@
 <template>
 	<v-app id="inspire">
-
 		<v-content>
 			<v-container class="fill-height" fluid>
 				<v-row align="center" justify="center">
 					<v-col cols="12" sm="8" md="4">
-						<v-card class="elevation-12">
+						<ValidationObserver ref="observer">
+							<form>
+								<v-card class="elevation-12">
 
-							<v-toolbar color="primary" dark flat>
-								<v-toolbar-title>Login Form</v-toolbar-title>
-							</v-toolbar>
-							
-							<ValidationObserver ref="observer">
-								<form>
-
+									<v-toolbar color="primary" dark flat>
+										<v-toolbar-title>Cadastre-se</v-toolbar-title>
+									</v-toolbar>
+									
 									<v-card-text>
-								
-										<ValidationProvider v-slot="{ errors }" name="login" rules="required|max:30">
-											<v-text-field label="Login" name="login" v-model="loginForm.user_name" 
-												type="text" autocomplete="on" :error-messages="errors">
+											<ValidationProvider v-slot="{ errors }" name="rmsil" rules="required|max:30">
+											<v-text-field label="Email" name="email" v-model="loginForm.email" type="email" :error-messages="errors">
+												<template v-slot:prepend>
+													<v-icon>mdi-email</v-icon>
+												</template>
+											</v-text-field>
+											</ValidationProvider>
+
+											<ValidationProvider v-slot="{ errors }" name="user_name" rules="required|max:30">
+											<v-text-field label="Login" name="user_name" v-model="loginForm.user_name" type="text" :error-messages="errors">
 												<template v-slot:prepend>
 													<v-icon>mdi-account</v-icon>
 												</template>
 											</v-text-field>
-										</ValidationProvider>
+											</ValidationProvider>
 
-										<ValidationProvider v-slot="{ errors }" name="password" rules="required|max:30">
+											<ValidationProvider v-slot="{ errors }" name="password" rules="required|max:30">
 											<v-text-field id="password" label="Password" name="password" v-model="loginForm.password" 
-												type="password" autocomplete="on" :error-messages="errors">	
+												type="password" :error-messages="errors">	
 												<template v-slot:prepend>
-													<v-icon>mdi-lock</v-icon>
+														<v-icon>mdi-lock</v-icon>
 												</template>
 											</v-text-field>
-										</ValidationProvider>
-									
+											</ValidationProvider>
+
 									</v-card-text>
 
 									<v-card-actions>
 										<v-spacer />
-										<v-btn color="primary" @click="submit">Login</v-btn>
+										<v-btn color="primary" @click="submit">Cadastrar</v-btn>
 									</v-card-actions>
 
+								</v-card>
 							</form>
 						</ValidationObserver>
-
-						</v-card>
 					</v-col>
 				</v-row>
 			</v-container>
@@ -83,7 +86,8 @@ export default {
 		return {
 			loginForm: {
 				user_name: '',
-				password: ''
+				password: '',
+				email: ''
 			}
 		}
 	},
@@ -92,21 +96,20 @@ export default {
 		submit() {
 			this.$refs.observer.validate().then(result => {
 				if (result) {
-					Login.login(this.loginForm).then( (result) => {
-						localStorage.setItem('user', result.data.user)
-						localStorage.setItem('token', result.data.token)
-
-						if (localStorage.getItem('token') != null){
-							this.$router.push({name: 'Home'})
-						}
-						
+					Login.register(this.loginForm).then( () => {
+						this.$swal({
+							title: "Sucesso!",
+							text: "O Usuário foi cadastrado com sucesso!",
+							icon: "success",
+							button: "Ok!",
+						});
 						
 					})
 					.catch(err => {
-						console.error(err.response)
+						console.error(err)
 						this.$swal({
 							title: "Erro!",
-							text: "Ao logar",
+							text: "Error ao cadastrar usuário",
 							icon: "error",
 							button: "Ok!",
 						});
@@ -117,8 +120,15 @@ export default {
 				console.error(err)
 			});
 		},
-	},
 
+		clear() {
+			this.loginForm.user_name = ''
+			this.loginForm.password = ''
+			this.loginForm.email = ''
+			this.$refs.observer.reset()
+		},
+
+	},
 }
 
 </script>
