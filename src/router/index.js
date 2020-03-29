@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import AuthAPI from '../api/Login'
+
 // Components to Router
 import MainLayout from '../components/Layout/MainLayout.vue'
 
@@ -57,11 +59,13 @@ let router = new VueRouter ({
       path: '/login',
       name: 'Login',
       component: Login,
+      props: true
     },
     {
       path: '/register',
       name: 'Register',
       component: Register,
+
     }
     // { path: '/home', name: "Home", component: Home },
     // { path: '/aboutme', name: "About Me", component: AboutMe},
@@ -76,38 +80,25 @@ let router = new VueRouter ({
 });
 
 // REgula aonde vai executar algo antes de entrar
-// router.beforeEach((to, from, next) => {
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//     if (localStorage.getItem('jwt') == null) {
-//       next({
-//         path: '/login',
-//         params: { nextUrl: to.fullPath }
-//       })
-//     } else {
-//       let user = JSON.parse(localStorage.getItem('user'))
-//       if(to.matched.some(record => record.meta.is_admin)) {
-//         if(user.is_admin == 1){
-//             next()
-//         }
-//         else{
-//             next({ name: 'userboard'})
-//         }
-//       }
-//       else {
-//         next()
-//       }
-//     }
-//   } else if(to.matched.some(record => record.meta.guest)) {
-//       if(localStorage.getItem('jwt') == null){
-//           next()
-//       }
-//       else{
-//           next({ name: 'userboard'})
-//       }
-//     }else {
-//     next() 
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    // console.log("ENROU")
+
+    if (localStorage.getItem('token') === null){
+      next({ path: '/login?auth=false', params: { auth: 'false' }, props: { auth: "xxxx"}});
+    }
+
+    AuthAPI.auth().then( () => {
+      next()   
+    })
+    .catch( () => {
+      next({ path: '/login?auth=false', params: { auth: 'false' },  props: { auth: "xxxx"}});
+    })    
+      
+  } else {
+    next() // make sure to always call next()!
+  }
+})
 
 
 /*

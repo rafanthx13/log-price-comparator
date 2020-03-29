@@ -121,7 +121,7 @@ export default {
         Shop.getShopsByCity(this.logData.city).then(result => {
           if(result){
             let ShopsNamesList = this.getListOne('name', result.data)
-            console.log(ShopsNamesList)
+            // console.log(ShopsNamesList)
             this.items.shop = ShopsNamesList
           } else {
              this.logData.shop = []
@@ -141,7 +141,7 @@ export default {
         Product.getProductsNames().then(result => {
           if(result){
             let ProductsNameList = this.getListOne('name', result.data)
-            console.log(ProductsNameList)
+            // console.log(ProductsNameList)
             this.items.product = ProductsNameList
           } else {
             this.items.product = []
@@ -163,7 +163,7 @@ export default {
     City.getCities().then( result => {
       if(result){
           this.items.city = this.getListOne('city', result.data)
-          console.log(this.getListOne('city', result.data))
+          // console.log(this.getListOne('city', result.data))
         } else {
           console.log("fail 442")
         }

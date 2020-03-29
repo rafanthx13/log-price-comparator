@@ -106,6 +106,18 @@ app.post('/login', function(req, res) {
 
 });
 
+app.get('/auth', function(req, res) {
+  let token = req.headers['authorization'];
+  if (!token) 
+    return res.status(401).send({ auth: false, message: 'No token provided.' });
+  
+  jwt.verify(token, API_SECRET, function(err, decoded) {
+    if (err) 
+      return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+    res.status(200).send(decoded); // pode tirar esse decode, nao vou usar pra nada
+  });
+});
+
 
 
 

@@ -5,7 +5,7 @@
 			<v-container class="fill-height" fluid>
 				<v-row align="center" justify="center">
 					<v-col cols="12" sm="8" md="4">
-						<v-card class="elevation-12">
+						<v-card class="elevation-12" style="margin-bottom: 30%;">
 
 							<v-toolbar color="primary" dark flat>
 								<v-toolbar-title>Login Form</v-toolbar-title>
@@ -41,10 +41,14 @@
 										<v-btn color="primary" @click="submit">Login</v-btn>
 									</v-card-actions>
 
+
 							</form>
 						</ValidationObserver>
 
 						</v-card>
+
+						<notifications group="notify-unauthorized" position="top center" style="top: 10px;"/>
+
 					</v-col>
 				</v-row>
 			</v-container>
@@ -79,12 +83,30 @@ export default {
 		ValidationObserver,
 	},
 
+	props: {
+		auth: String
+	},
+
 	data() {
 		return {
 			loginForm: {
 				user_name: '',
 				password: ''
-			}
+			},
+			
+		}
+	},
+
+	mounted: function () {
+		if(this.$route.query.auth == 'false'){
+			console.log("re")
+			this.$notify({
+				group: 'notify-unauthorized',
+				title: 'Error de Sessão',
+				text: 'É necessário logar corretamente para acessar',
+				duration: 7000,
+				type: 'error',
+			});
 		}
 	},
 

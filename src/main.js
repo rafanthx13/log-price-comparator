@@ -4,6 +4,8 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import router from './router'
 import VueSwal from 'vue-swal'
+import Notifications from 'vue-notification'
+Vue.use(Notifications)
 
 // import Axios from 'axios'
 // Vue.prototype.$http = Axios;

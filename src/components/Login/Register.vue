@@ -6,7 +6,7 @@
 					<v-col cols="12" sm="8" md="4">
 						<ValidationObserver ref="observer">
 							<form>
-								<v-card class="elevation-12">
+								<v-card class="elevation-12" style="margin-bottom: 30%;">
 
 									<v-toolbar color="primary" dark flat>
 										<v-toolbar-title>Cadastre-se</v-toolbar-title>

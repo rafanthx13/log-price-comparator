@@ -14,4 +14,8 @@ export default class {
     return Http.post('http://localhost:3000/register', body);
   }
 
+  static auth(){
+    return Http.get('http://localhost:3000/auth');
+  }
+
 }

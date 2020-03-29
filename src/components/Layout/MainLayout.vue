@@ -63,6 +63,148 @@
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>LogPrice App</v-toolbar-title>
+
+      <v-spacer /> <!-- Espaço para jogar pro lado -->
+
+      <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition">
+
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs"  v-on="on">
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+
+          <v-list-item @click="log_out()">
+            <v-list-item-action>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>Sair</v-list-item-title>
+          </v-list-item>
+
+        </v-list>
+
+<!--         <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>mdi-exit-to-app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Sair</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile> -->
+
+      </v-menu>
+
+      <!-- <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition">
+        <v-btn icon large flat slot="activator" :ripple="false">
+          <v-avatar size="42px">
+            <img src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Sunglasses&hairColor=Black&facialHairType=Blank&clotheType=CollarSweater&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"/>
+          </v-avatar>
+        </v-btn>
+        <v-list>
+
+          <v-list-tile>
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Contato</v-list-item-title>
+            </v-list-item-content>
+          </v-list-tile>
+
+          <v-list-tile>
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Contato</v-list-item-title>
+            </v-list-item-content>
+          </v-list-tile>
+
+
+          <v-list-tile>
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Contato</v-list-item-title>
+            </v-list-item-content>
+          </v-list-tile>
+
+
+        </v-list> 
+
+      </v-menu>  -->
+
+      <!-- <v-list>
+        <v-list-tile
+          v-for="(item,index) in items"
+          :key="index"
+          :to="!item.href ? { name: item.name } : null"
+          :href="item.href"
+          ripple="ripple"
+          :disabled="item.disabled"
+          :target="item.target"
+          @click="item.click">
+          <v-list-tile-action v-if="item.icon">
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list> 
+
+
+      <v-list>
+        <v-list-tile
+          v-for="(item,index) in items"
+          :key="index"
+          :to="!item.href ? { name: item.name } : null"
+          :href="item.href"
+          ripple="ripple"
+          :disabled="item.disabled"
+          :target="item.target"
+          @click="item.click">
+          <v-list-tile-action v-if="item.icon">
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list> 
+
+       
+        <v-list-item @click="go_to('About Me')">
+          <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Contato</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> 
+
+
+         <v-list>
+          <v-list-tile>
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Contato</v-list-item-title>
+            </v-list-item-content>
+          </v-list-tile>
+        </v-list> 
+      -->
+
+
+       
+
+
+
+
     </v-app-bar>
 
     <!-- <router-view></router-view> -->
@@ -99,7 +241,14 @@
       // Não consegui por $router.push 'in_code' entao eupus aqui
       go_to(link_path) {
         this.$router.push({name: link_path})
-      }
+      },
+
+      log_out(){
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        this.$router.push({name: 'Login'})
+      },
+
     },
 
   }
