@@ -1,29 +1,38 @@
+// Expres App API
 var express = require('express');
 var app = express();
 
-// MidleWares.
-const cors = require('cors')
-const bodyParser = require('body-parser');
+// JWT Auth.
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const bcryptNumber = 8;
+// Swagger
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs'); // Convert YAML to JSON
+const swaggerDocument = YAML.load('./config/swagger.yaml');
 
 // ENV.
-const { PORT, API_SECRET } = require("./env/env_config.js");
-const port = PORT || 3000;
+const { PORT, API_SECRET } = require("./config/env.config.js");
+
+// BD Acess Functions
+var exec_mysql_query = require('./db/exec_query');
+var exec_query_callback = require('./db/exec_query_callback');
+
+// Body-Parse and CORS Middlewares
+const cors = require('cors')
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
-// BD Connection.
-var exec_mysql_query = require('./config/mysql_connection');
-var checkPassword = require('./config/checkPassword');
+// API ROUTES
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.send('API It\'s Working!');
 });
+
+// CITY
 
 app.get('/city', function (req, res) {
   exec_mysql_query('SELECT * FROM city', res);
@@ -39,6 +48,8 @@ app.post('/city', (req, res) =>{
   const country = req.body.country;
   exec_mysql_query(`INSERT INTO city(city, state, country) VALUES('${city}','${state}', '${country}');`, res);
 });
+
+// SHOP
 
 app.get('/shop', function (req, res) {
   exec_mysql_query('SELECT * FROM shop', res);
@@ -65,6 +76,8 @@ app.post('/shop', (req, res) =>{
   exec_mysql_query(def_query + value_query, res);
 });
 
+// PRODUCT
+
 app.get('/product', function (req, res) {
   exec_mysql_query('SELECT * FROM product', res);
 });
@@ -73,61 +86,6 @@ app.get('/product/name', function (req, res) {
   exec_mysql_query('SELECT name FROM product', res);
 });
 
-
-
-
-
-
-// Apenas Registra
-app.post('/register', function(req, res) {
-  const saltRounds = 10
-  const salt = bcrypt.genSaltSync(saltRounds)
-  let user_name = req.body.user_name;
-  let email = req.body.email;
-  let password = bcrypt.hashSync(req.body.password, salt);
-  console.log(password);
-  let user_type = req.body.user_type || '';
-
-  let query = ` INSERT INTO user (user_name, email, password, user_type)
-    VALUES ( '${user_name}', '${email}', '${password}', '${user_type}');`
-  exec_mysql_query(query, res);
-  
-});
-
-// Recupera o token apos logar
-app.post('/login', function(req, res) {
-  let user_name = req.body.user_name;
-  let password = req.body.password
-
-  checkPassword(user_name, password, API_SECRET, res) 
-
-  // Ta gerando uma senha diferente toda hora
-  // let password = bcrypt.hashSync(req.body.password, 8)
-
-});
-
-app.get('/auth', function(req, res) {
-  let token = req.headers['authorization'];
-  if (!token) 
-    return res.status(401).send({ auth: false, message: 'No token provided.' });
-  
-  jwt.verify(token, API_SECRET, function(err, decoded) {
-    if (err) 
-      return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-    res.status(200).send(decoded); // pode tirar esse decode, nao vou usar pra nada
-  });
-});
-
-
-
-
-
-
-
-
-
-
-
 app.post('/product', (req, res) =>{
   const name = req.body.name;
   const type = req.body.type;
@@ -135,6 +93,8 @@ app.post('/product', (req, res) =>{
   const value_query = ` VALUES('${name}','${type}');`
   exec_mysql_query(def_query + value_query, res);
 });
+
+// LOG
 
 app.get('/log', (req, res) => {
   exec_mysql_query('SELECT * FROM log', res);
@@ -158,63 +118,70 @@ app.post('/log', (req, res) =>{
   exec_mysql_query(def_query + value_query, res);
 });
 
-//INSERT INTO `price_log_bd`.`log` (`log_id`, `product`, `price`, `shop`, `city`, `date`)
-//  VALUES ('2', 'asfa', '4.5543', 'fasfa', 'dgdggd', '30-02-1998');
+// AUTHORIZATION
 
+app.post('/register', function(req, res) {
+  const saltRounds = 10
+  const salt = bcrypt.genSaltSync(saltRounds)
+  let user_name = req.body.user_name;
+  let email = req.body.email;
+  let password = bcrypt.hashSync(req.body.password, salt);
+  console.log(password);
+  let user_type = req.body.user_type || '';
+  let query = ` INSERT INTO user (user_name, email, password, user_type)
+    VALUES ( '${user_name}', '${email}', '${password}', '${user_type}');`
+  exec_mysql_query(query, res);
+});
 
-// Lidar com Erros 404 (Nâo encontrado).
-// POR DEFINIÇÂO, DEVE SER O ÚLTIMO 'USE'.
+app.post('/login', function(req, res) {
+  let user_name = req.body.user_name;
+  let password = req.body.password
+  let query = `SELECT * FROM user WHERE user_name = '${user_name}' LIMIT 1`;
+
+  exec_query_callback(query, function(error, results) {
+    try {
+      if(error) 
+        res.status(401).send({ auth: false, token: null, message: "Strange Error" });
+      if(results === undefined)
+        res.status(401).send({ auth: false, token: null, message: "results is undefinied. Restar Application" });
+      if(results.length <= 0)
+        res.status(404).send({ auth: false, token: null, message: "User not found"});
+      if (bcrypt.compareSync(password, results[0].password)){ 
+        let token = jwt.sign({ id: results[0].id }, API_SECRET, {
+          expiresIn: 86400 // expires in 24 hours
+        });
+        res.status(200).send({ auth: true, token: token, user: user_name });
+      } else {
+        res.status(401).send({ auth: false, token: null, message: "Fail in JWT Validation" });
+      }
+    } catch (e) {
+      // console.error("user_name", user_name, "|| password", password)
+      // console.error("results", results)
+      console.error("e.mesasge in /login: ", e.message);
+    }
+    
+  }) 
+});
+
+app.get('/auth', function(req, res) {
+  let token = req.headers['authorization'];
+  if (!token) 
+    return res.status(401).send({ auth: false, message: 'No token provided.' });
+  jwt.verify(token, API_SECRET, function(err, decoded) {
+    if (err) 
+      return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+    res.status(200).send(decoded); // pode tirar esse decode, nao vou usar pra nada
+  });
+});
+
+// Swagger API Access
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Lidar com Erros 404 (Nâo encontrado). POR DEFINIÇÂO, DEVE SER O ÚLTIMO 'USE'.
 app.use(function(req, res, next) {
-  res.status(404).send('Sorry cant find that!');
+  res.status(404).send('Sorry can\'t find that API URL!');
 });
 
-
-app.listen(port, function () {
-  console.log('App listening on port ' + port);
+app.listen(PORT, function () {
+  console.log('App listening on port ' + PORT + " ...");
 });
-
-function checkPassword(password){
-
-}
-
-
-
-// router.post('/clientes', (req, res) =>{
-//   const nome = req.body.nome.substring(0,150);
-//   const cpf = req.body.cpf.substring(0,11);
-//   execSQLQuery(`INSERT INTO Clientes(Nome, CPF) VALUES('${nome}','${cpf}')`, res);
-// });
-
-/*
-//definindo as rotas
-const router = express.Router();
-router.get('/', (req, res) => res.json({ message: 'Funcionando!' }));
-router.get('/clientes/:id?', (req, res) =>{
-    let filter = '';
-    if(req.params.id) filter = ' WHERE ID=' + parseInt(req.params.id);
-    execSQLQuery('SELECT * FROM Clientes' + filter, res);
-});
-router.delete('/clientes/:id', (req, res) =>{
-    execSQLQuery('DELETE FROM Clientes WHERE ID=' + parseInt(req.params.id), res);
-});
-router.post('/clientes', (req, res) =>{
-    const nome = req.body.nome.substring(0,150);
-    const cpf = req.body.cpf.substring(0,11);
-    execSQLQuery(`INSERT INTO Clientes(Nome, CPF) VALUES('${nome}','${cpf}')`, res);
-});
-router.patch('/clientes/:id', (req, res) =>{
-    const id = parseInt(req.params.id);
-    const nome = req.body.nome.substring(0,150);
-    const cpf = req.body.cpf.substring(0,11);
-    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}' WHERE ID=${id}`, res);
-});
-app.use('/', router);
-
-//inicia o servidor
-app.listen(port);
-console.log('API funcionando!');
-*/
-
-
-
-
