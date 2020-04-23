@@ -13,8 +13,11 @@ export default class {
     return http.post(login.register, body);
   }
 
-  static auth(){
-    return http.get(login.auth);
+  // Infelizmente, as vezes o token não é mandado
+  static auth(token){
+    return http.get(login.auth, {
+      headers: { Authorization: token }
+    });
   }
 
 }

@@ -28,7 +28,7 @@ Vue.use(VueRouter)
 */
 
 // TODO: REGISTRA: EM 16/03 eu usarei 2 router-view, para que possa ter uma tela sem o Layout Oirignal, como intranet
-//  Vai funcionar com o children pois o children é usado quando se tem router-vrei detrno de router-view
+// Vai funcionar com o children pois o children é usado quando se tem router-vrei detrno de router-view
 // Assim, "Login nâo tem o latout de MainLayout"
 
 let router = new VueRouter ({
@@ -77,10 +77,8 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('token') === null){
       next({ name: 'Login', params: { auth: 'false' }});
     } else {
-      // console.log(localStorage.getItem('token'));
-      AuthAPI.auth().then( () => {
-        // console.log(localStorage.getItem('token'));
-        next()   
+      AuthAPI.auth(localStorage.getItem('token')).then( () => {
+        next()  
       })
       .catch( () => {
         if(to.name == 'Login'){
@@ -90,7 +88,6 @@ router.beforeEach((to, from, next) => {
         }
       })   
     }
-      
   } else {
     next();  
   }

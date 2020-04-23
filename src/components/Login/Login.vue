@@ -9,7 +9,7 @@
 
 							<v-toolbar color="primary" dark flat>
 								<v-toolbar-title>Log-Comparator App</v-toolbar-title>
-								{{ this.$store.getters.getRoutes.login.login }}
+								v1.0.2
 							</v-toolbar>
 							
 							<ValidationObserver ref="observer">
@@ -109,8 +109,6 @@ export default {
 
 	methods: {
 		submit() {
-			let URL = window.location.hostname + ":" + window.location.port; // Obtem  o hostname e porta pra saber se é localHost ou não
-			console.log(URL);
 			this.$refs.observer.validate().then(result => {
 				if (result) {
 					Login.login(this.loginForm).then( (result) => {

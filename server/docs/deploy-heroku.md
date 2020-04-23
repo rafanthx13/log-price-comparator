@@ -163,3 +163,19 @@ coloacando os seguintes script em package.json
     "start": "node server.js"
 
 
+## Para dar push no Heroku no price-log-app
+
+copiei a pata `src` e cole aonde tem `src` na outra. Depois faz
+
+git status/add --all/commit -m "acommit"
+
+em seguida faça
+
+`git push heroku master`
+
+Se nâo funcionar, logue no heroku ness apasta (Pelo CLI do Heroku):
+
+heroku login
+
+e entâo faça ospassaso antesrireos denovo
+

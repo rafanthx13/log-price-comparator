@@ -240,7 +240,7 @@
     methods: {
       // Não consegui por $router.push 'in_code' entao eupus aqui
       go_to(link_path) {
-        this.$router.push({name: link_path})
+        this.$router.push({name: link_path}).catch(() => {}) // evitar um Eror NavegationDuplicate
       },
 
       log_out(){
