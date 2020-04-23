@@ -1,27 +1,22 @@
-import Http from './http'
+import http from './http'
+import store from '../store';
+
+let log = store.getters.getRoutes.log;
 
 export default class {
 
-  constructor(){
-    this.id = 0;
-  }
-
-   static getAll(){
-    return Http.get('http://localhost:3000/log');
+  static getAll(){
+    return http.get(log.getAll);
   }
 
   static post(body){
-    return Http.post('http://localhost:3000/log', body);
+    return http.post(log.post, body);
   }
 
   static getPosted(body){
-    // console.log("dentro do get do LOG", body)
-    return Http.post('http://localhost:3000/log/get', body);
+    return http.post(log.getPosted, body);
   }
 
 }
-
-// INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 
-// VALUES ('4', '435', 't', 'gd', 'gd', 'gsd', 'gs');
 
 

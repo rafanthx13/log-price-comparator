@@ -8,7 +8,8 @@
 						<v-card class="elevation-12" style="margin-bottom: 30%;">
 
 							<v-toolbar color="primary" dark flat>
-								<v-toolbar-title>Login Form</v-toolbar-title>
+								<v-toolbar-title>Log-Comparator App</v-toolbar-title>
+								{{ this.$store.getters.getRoutes.login.login }}
 							</v-toolbar>
 							
 							<ValidationObserver ref="observer">
@@ -38,16 +39,18 @@
 
 									<v-card-actions>
 										<v-spacer />
-										<v-btn color="primary" @click="submit">Login</v-btn>
+										<v-btn color="primary" style="margin-right: 10px;" @click="submit">Login</v-btn>
+										<router-link to="/register" >
+											<v-btn color="primary">Cadastre-se</v-btn>
+										</router-link>
 									</v-card-actions>
-
 
 							</form>
 						</ValidationObserver>
 
 						</v-card>
 
-						<notifications group="notify-unauthorized" position="top center" style="top: 10px;"/>
+						<notifications group="error-login" position="top center" style="top: 10px;"/>
 
 					</v-col>
 				</v-row>
@@ -61,6 +64,7 @@
 import { required, max } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, 
 	ValidationProvider, setInteractionMode } from 'vee-validate'
+// import './../store';
 
 import Login from '../../api/Login'
 
@@ -98,47 +102,45 @@ export default {
 	},
 
 	mounted: function () {
-		if(this.$route.query.auth == 'false'){
-			console.log("re")
-			this.$notify({
-				group: 'notify-unauthorized',
-				title: 'Error de Sessão',
-				text: 'É necessário logar corretamente para acessar',
-				duration: 7000,
-				type: 'error',
-			});
+		if (this.$route.params.auth) {
+			this.error_notify('Error de Sessão', 'É necessário logar corretamente para acessar')
 		}
 	},
 
 	methods: {
 		submit() {
+			let URL = window.location.hostname + ":" + window.location.port; // Obtem  o hostname e porta pra saber se é localHost ou não
+			console.log(URL);
 			this.$refs.observer.validate().then(result => {
 				if (result) {
 					Login.login(this.loginForm).then( (result) => {
 						localStorage.setItem('user', result.data.user)
 						localStorage.setItem('token', result.data.token)
-
 						if (localStorage.getItem('token') != null){
 							this.$router.push({name: 'Home'})
 						}
-						
-						
 					})
-					.catch(err => {
-						console.error(err.response)
-						this.$swal({
-							title: "Erro!",
-							text: "Ao logar",
-							icon: "error",
-							button: "Ok!",
-						});
+					.catch( () => {
+						localStorage.removeItem('user');
+						localStorage.removeItem('token');
+						this.error_notify('Erro de Login', 'Usuário o Senha não encontrados')
 					})
-				} 
-			})
-			.catch((err) => {
-				console.error(err)
+				} else {
+					this.error_notify('Error de Formulário', 'Dados inseridos inválidos para login')
+				}
+			}
+		)},
+		
+		error_notify(title, text, duration = 7000){
+			this.$notify({
+				group: 'error-login',
+				title: title,
+				text: text,
+				duration: duration,
+				type: 'error',
 			});
 		},
+
 	},
 
 }

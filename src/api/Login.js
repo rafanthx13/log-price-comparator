@@ -1,21 +1,20 @@
-import Http from './http'
+import http from './http'
+import store from '../store';
+
+let login = store.getters.getRoutes.login;
 
 export default class {
 
-  constructor(){
-    this.id = 0;
-  }
-
   static login(body){
-    return Http.post('http://localhost:3000/login', body);
+    return http.post(login.login, body);
   }
 
   static register(body){
-    return Http.post('http://localhost:3000/register', body);
+    return http.post(login.register, body);
   }
 
   static auth(){
-    return Http.get('http://localhost:3000/auth');
+    return http.get(login.auth);
   }
 
 }

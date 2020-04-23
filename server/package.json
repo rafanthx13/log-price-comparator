@@ -8,7 +8,7 @@
     "start": "nodemon"
   },
   "keywords": [],
-  "author": "",
+  "author": "Rafael Morais de Assis",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -23,5 +23,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }

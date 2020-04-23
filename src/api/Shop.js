@@ -1,31 +1,25 @@
-import Http from './http'
+import http from './http';
+import store from '../store';
+
+let shop = store.getters.getRoutes.shop;
 
 export default class {
 
-  constructor(){
-    this.id = 0;
-  }
-
-   static getAll(){
-    return Http.get('http://localhost:3000/shop');
+  static getAll(){
+    return http.get(shop.getAll);
   }
 
   static post(body){
-    return Http.post('http://localhost:3000/shop', body);
+    return http.post(shop.post, body);
   }
 
   static getShopsNames(){
-    return Http.get('http://localhost:3000/shop/name');
+    return http.get(shop.getShopsNames);
   }
 
   static getShopsByCity(city_name){
-    console.log('http://localhost:3000/shop/city?city_name=' + city_name)
-    return Http.get('http://localhost:3000/shop/city?city_name=' + city_name);
+    return http.get(shop.getShopsNames + city_name);
   }
 
 }
-
-// INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 
-// VALUES ('4', '435', 't', 'gd', 'gd', 'gsd', 'gs');
-
 

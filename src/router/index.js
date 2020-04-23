@@ -33,7 +33,7 @@ Vue.use(VueRouter)
 
 let router = new VueRouter ({
   mode: 'history',
-  // linkActiveClass: 'active',
+  // linkActiveClass: 'active', // mudei aki
   routes: [
     { path: '/app/', component: MainLayout, redirect: '/home', children: 
       [
@@ -53,13 +53,12 @@ let router = new VueRouter ({
     },
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/login'
     },
     {
       path: '/login',
       name: 'Login',
       component: Login,
-      props: true
     },
     {
       path: '/register',
@@ -67,37 +66,35 @@ let router = new VueRouter ({
       component: Register,
 
     }
-    // { path: '/home', name: "Home", component: Home },
-    // { path: '/aboutme', name: "About Me", component: AboutMe},
-    // { path: '/insert', name: 'Insert Main', component: InsertMain},
-    // { path: '/insert/city', name: 'Insert City', component: InsertCity},
-    // { path: '/insert/shop', name: 'Insert Shop', component: InsertShop},
-    // { path: '/insert/product', name: 'Insert Product', component: InsertProduct},
-    // { path: '/search', name: "Search", component: SearchMain },
-    // { path: '/log', name: 'Log', component: InsertLog}
   ]
 
 });
 
-// REgula aonde vai executar algo antes de entrar
+// Regula aonde vai executar algo antes de entrar
 router.beforeEach((to, from, next) => {
+
   if(to.matched.some(record => record.meta.requiresAuth)) {
-    // console.log("ENROU")
-
     if (localStorage.getItem('token') === null){
-      next({ path: '/login?auth=false', params: { auth: 'false' }, props: { auth: "xxxx"}});
+      next({ name: 'Login', params: { auth: 'false' }});
+    } else {
+      // console.log(localStorage.getItem('token'));
+      AuthAPI.auth().then( () => {
+        // console.log(localStorage.getItem('token'));
+        next()   
+      })
+      .catch( () => {
+        if(to.name == 'Login'){
+          next(false) // abort
+        } else {
+          next({ name: 'Login', params: { auth: 'false' }});  
+        }
+      })   
     }
-
-    AuthAPI.auth().then( () => {
-      next()   
-    })
-    .catch( () => {
-      next({ path: '/login?auth=false', params: { auth: 'false' },  props: { auth: "xxxx"}});
-    })    
       
   } else {
-    next() // make sure to always call next()!
+    next();  
   }
+
 })
 
 
