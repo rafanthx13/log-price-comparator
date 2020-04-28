@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h1 class="main-title">INSERT CITY</h1>
+    <!-- <h1 class="main-title">INSERT CITY</h1> -->
 
       <v-container fluid style="text-align:center">
 
@@ -11,8 +11,9 @@
 
               <!-- Card Title -->
               <v-card-title>
-                <v-icon>mdi-city</v-icon>
-                <span class="headline mb-0 title-form">Insira os dados da Cidade</span>
+                <h1>
+                  <span class="headline mb-0 title-form text-break"><v-icon>mdi-cart-plus</v-icon>Insira os dados de um Registro</span>  
+                </h1>
               </v-card-title>
 
               <!-- Card Content -->

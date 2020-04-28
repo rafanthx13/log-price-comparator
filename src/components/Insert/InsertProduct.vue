@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="main-title">INSERT PRODUCT</h1>
+    <!-- <h1 class="main-title">Inserir Produtos</h1> -->
 
     <v-container fluid style="text-align:center">
 
@@ -11,8 +11,9 @@
 
             <!-- Card Title -->
             <v-card-title>
-              <v-icon>mdi-city</v-icon>
-              <span class="headline mb-0 title-form">Insira os dados do Produto</span>
+              <h2>
+                <span class="headline mb-0 title-form text-break"><v-icon>mdi-city</v-icon>Insira os dados do Produto</span>  
+              </h2>
             </v-card-title>
 
             <!-- Card Content -->
@@ -94,13 +95,23 @@ export default {
             this.clear()
           })
           .catch(err => {
-            console.error(err)
-            this.$swal({
-              title: "Erro!",
-              text: "Erro ao insrerir Produto",
-              icon: "error",
-              button: "Ok!",
-            });
+            if(err.message){
+              this.$swal({
+                title: "Erro!",
+                text: "Produto " + this.productData.name + " já existe!" ,
+                icon: "error",
+                button: "Ok!",
+              });
+            }else{
+              console.error(err)
+              this.$swal({
+                title: "Erro!",
+                text: "Erro ao insrerir Produto",
+                icon: "error",
+                button: "Ok!",
+              });
+            }
+            
           })
         } 
       })

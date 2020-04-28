@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="main-title">INSERT SHOP</h1>
+    <!-- <h1 class="main-title">Inserir Lojas</h1> -->
 
     <v-container fluid style="text-align:center">
       <v-card class="pb-7" elevation="6">
@@ -9,8 +9,9 @@
 
             <!-- Card Title -->
             <v-card-title>
-              <v-icon>mdi-shopping</v-icon>
-              <span class="headline mb-0 title-form">Insira os dados do Estabelecimento</span>
+              <h2>
+                <span class="headline mb-0 title-form text-break"><v-icon>mdi-shopping</v-icon>Insira os dados do Estabelecimento</span>  
+              </h2>
             </v-card-title>
 
             <!-- Card Content -->
@@ -46,6 +47,7 @@
           </form>
         </ValidationObserver>
       </v-card>
+      <notifications group="error-login" position="top right" style="top: 10px;"/>
     </v-container>
 
   </div>
@@ -134,27 +136,27 @@ export default {
       if(regexCEP.test(this.shopData.cep)){
         axios.get("https://viacep.com.br/ws/" + this.shopData.cep + "/json/")
         .then( endereco => {
-          if(endereco){
+          if( !endereco || endereco.data.erro){
+            this.errorCEP("CEP não encontrado")
+          } else if(endereco){
             this.shopData.street = endereco.data.logradouro;
             this.shopData.neighbor = endereco.data.bairro;
             this.shopData.city = endereco.data.localidade;
-          } else {
-            this.errorCEP()
           }
         })
         .catch( () => {
-          this.errorCEP()
+          this.errorCEP("Erro na Busca automática de CEP")
         });
       }
     },
 
-    errorCEP(){
-      // TODO: Mudar para notificação mais simples
-      this.$swal({
-        title: "Falha!",
-        text: "Erro ao acessar API de CEP",
-        icon: "error",
-        button: "Ok!",
+    errorCEP(textMessage){
+      this.$notify({
+        group: 'error-login',
+        title: "Erro no CEP",
+        text: textMessage,
+        duration: 6000,
+        type: 'error',
       });
     }
 

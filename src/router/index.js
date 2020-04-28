@@ -1,13 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import AuthAPI from '../api/Login'
+import AuthAPI from '../api/Login';
 
 // Components to Router
-import MainLayout from '../components/Layout/MainLayout.vue'
+import MainLayout from '../components/Layout/MainLayout.vue';
 
-import Login from '../components/Login/Login.vue'
-import Register from '../components/Login/Register.vue'
+import Login from '../components/Login/Login.vue';
+import Register from '../components/Login/Register.vue';
+import NotFound from '../components/Common/NotFound.vue';
 
 import Home from '../components/Home'
 import AboutMe from '../components/AboutMe'
@@ -64,8 +65,10 @@ let router = new VueRouter ({
       path: '/register',
       name: 'Register',
       component: Register,
-
-    }
+    },
+    { path: '*',
+      component: NotFound,
+      name: 'Not Found'}
   ]
 
 });

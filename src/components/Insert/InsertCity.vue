@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h1 class="main-title">INSERT CITY</h1>
+    <!-- <h1 class="main-title">Inserir Cidade</h1> -->
 
     <v-container fluid style="text-align:center">
 
@@ -11,8 +11,9 @@
 
             <!-- Card Title -->
             <v-card-title>
-              <v-icon>mdi-city</v-icon>
-              <span class="headline mb-0 title-form">Insira os dados da Cidade</span>
+              <h2>
+                <span class="headline mb-0 title-form text-break"><v-icon>mdi-city</v-icon>Insira os dados da Cidade</span>
+              </h2>
             </v-card-title>
 
             <!-- Card Content -->
@@ -24,7 +25,7 @@
                 <v-text-field label="Estado" v-model="district.state" :error-messages="errors" required></v-text-field>
               </ValidationProvider>
               <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
-                <v-text-field label="Pais" v-model="district.country" :error-messages="errors" required></v-text-field>
+                <v-text-field label="País" v-model="district.country" :error-messages="errors" required></v-text-field>
               </ValidationProvider>
             </v-card-text>
 
@@ -95,13 +96,22 @@ export default {
             this.clear()
           })
           .catch(err => {
-            console.error(err)
-            this.$swal({
-              title: "Erro!",
-              text: "Erro ao insrerir a Cidade",
-              icon: "error",
-              button: "Ok!",
-            });
+            if(err.message){
+              this.$swal({
+                title: "Erro!",
+                text: "Cidade " + this.district.city + " já existe!" ,
+                icon: "error",
+                button: "Ok!",
+              });
+            } else {
+              this.$swal({
+                title: "Erro!",
+                text: "Erro ao insrerir a Cidade",
+                icon: "error",
+                button: "Ok!",
+              });
+            }
+            
           })
         } 
       })

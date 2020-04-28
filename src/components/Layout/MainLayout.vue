@@ -56,6 +56,17 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!-- Listar 
+        <v-list-item @click="go_to('List')">
+          <v-list-item-action>
+            <v-icon>mdi-view-list</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Pesquisar</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        -->
+
       </v-list>
     </v-navigation-drawer>
 

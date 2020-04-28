@@ -13,11 +13,13 @@ export default class {
     return http.post(product.post, body);
   }
 
-  static getProductsNames(){
-    return http.get(product.getProductsNames);
+  static getProductsNames(city){
+    return http.get(product.getProductsNames + "?city=" + city);
   }
 
 }
+
+//?page=2
 
 // INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 
 // VALUES ('4', '435', 't', 'gd', 'gd', 'gsd', 'gs');

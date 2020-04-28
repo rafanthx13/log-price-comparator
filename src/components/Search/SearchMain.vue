@@ -1,30 +1,32 @@
 <template>
-  <div style="width: 80%">
-    <h1>Search Logs</h1>
+  <div id="all-screen" >
 
-    <!-- Form Container  . -->
+    <notifications group="error-login" position="top right" style="top: 10px;"/>
+
+    <!-- Form Container  -->
     <v-container fluid style="text-align:center">
       <ValidationObserver ref="observer">
         <form>
           <v-card name="form-district" class="pb-7" elevation="6">
 
             <!-- Card Title -->
-            <v-card-title style="display: inline-block;">
-              <v-icon>mdi-magnify</v-icon>
-              <span class="headline mb-0 title-form">Insira os dados para Pesquisar por um produto</span>
+            <v-card-title>
+              <h1>
+                <span class="headline mb-0 title-form text-break"><v-icon>mdi-magnify</v-icon>Pesquise os preços de um produto</span>  
+              </h1>
             </v-card-title>
 
             <!-- Card Content -->
             <v-card-text primary-title style="justify-content:center; padding-bottom: 0;">
               <v-row style="display: inline-flex;">
                 <ValidationProvider v-slot="{ errors }" name="city" rules="required">
-                  <v-select class="form-item" :items="formItems.city" v-model="logData.city" label="Cidade" :error-messages="errors" outlined required></v-select>
+                  <v-select class="form-item select-field" :items="formItems.city" v-model="logData.city" label="Cidade" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
                 <ValidationProvider v-slot="{ errors }" name="product" rules="required">
-                  <v-select class="form-item" :items="formItems.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required></v-select>
+                  <v-select class="form-item select-field" :items="formItems.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required :disabled="!logData.city"></v-select>
                 </ValidationProvider>
-                <v-btn class="my-3 mr-3" @click="submit">Pesquisar</v-btn>
-                <v-btn class="my-3 mr-3" @click="clear">Limpar</v-btn>
+                <v-btn class="my-3 mr-3 buttons-form" @click="submit">Pesquisar</v-btn>
+                <v-btn class="my-3 mr-3 buttons-form" @click="clear">Limpar</v-btn>
               </v-row>
             </v-card-text>
 
@@ -95,7 +97,9 @@ setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir dados nesse campo',
+  message: (fieldName) => {
+    return 'É necessário inserir dados nesse campo:' + fieldName
+  }
 })
 
 extend('max', {
@@ -216,9 +220,9 @@ export default {
 
     'logData.city': function(){
       if(this.logData.city){
-        Product.getProductsNames().then(result => {
+        Product.getProductsNames(this.logData.city).then(result => {
           if(result){
-            let ProductsNameList = this.getListOne('name', result.data)
+            let ProductsNameList = this.getListOne('product', result.data)
             this.formItems.product = ProductsNameList
           } else {
             console.log("fail 444")
@@ -242,13 +246,11 @@ export default {
     City.getCities().then(result => {
       if(result){
         this.formItems.city = this.getListOne('city', result.data)
-        // console.log(this.getListOne('city', result.data))
       } else {
-        console.log("fail 442")
+        this.notifyError("Sem Cidades", "Não retornou Cidades para escolher");
       }
-    }).catch(err => {
-      console.log(err)
-      console.log("fail 332")
+    }).catch( () => {
+      this.notifyError("Error ao buscar Cidades", "Erro na busca de Cidades, tente mais tarde!");
     })
 
   },
@@ -275,9 +277,6 @@ export default {
                 console.log(err)
                 this.submittedFlag = true
               })
-          } else {
-            console.log("fail")
-            this.submittedFlag = true
           }
         })
         .catch((err) => {
@@ -334,7 +333,17 @@ export default {
         color += letters[Math.floor(Math.random() * 16)]
       }
       return color
-    }
+    },
+
+    notifyError(titleMessage, textMessage){
+      this.$notify({
+        group: 'error-login',
+        title: titleMessage,
+        text: textMessage,
+        duration: 6000,
+        type: 'error',
+      });
+    },
 
   },
 
@@ -357,5 +366,25 @@ export default {
 h1 {
   text-align: center;
 }
+
+#all-screen {
+  width: 80%;
+}
+
+@media screen and (max-width: 600px) {
+  .select-field{
+    width: 90%;
+  }
+
+  .buttons-form {
+    width: 80%;
+    margin-left: 10%
+  }
+
+  #all-screen {
+    width: 90%;
+  }
+}
+
 
 </style>

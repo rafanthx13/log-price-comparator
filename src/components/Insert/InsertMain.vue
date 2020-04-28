@@ -2,26 +2,26 @@
   <div>
     <v-container fluid>
 
-      <h1 class="main-title">INSERT MAIN</h1>
+      <h1 class="main-title">Área de Inserção de dados</h1>
 
       <v-row class="d-flex flex-row mt-5">
 
-        <v-card max-width="344" outlined @click="go_to('Insert City')" class="mx-10">
+        <v-card  outlined @click="go_to('Insert City')" class="mx-10 card-animated mb-2 responsive-cards">
           <v-list-item three-line>
             <v-list-item-content class="icon-options">
               <div class="overline mb-4">
-                <v-icon>mdi-city</v-icon>
+                <v-icon class="icon">mdi-city</v-icon>
               </div>
               <v-list-item-title class="headline mb-1">Município</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
 
-        <v-card max-width="344" outlined @click="go_to('Insert Shop')" class="mx-10">
+        <v-card  outlined @click="go_to('Insert Shop')" class="mx-10 card-animated mb-2 responsive-cards">
           <v-list-item three-line>
             <v-list-item-content class="icon-options">
               <div class="overline mb-4">
-                <v-icon>mdi-shopping</v-icon>
+                <v-icon class="icon">mdi-shopping</v-icon>
               </div>
               <v-list-item-title class="headline mb-1">Estabeleciomento</v-list-item-title>
             </v-list-item-content>
@@ -29,7 +29,7 @@
           </v-list-item>
         </v-card>
 
-        <v-card max-width="344" outlined @click="go_to('Insert Product')" class="mx-10">
+        <v-card outlined @click="go_to('Insert Product')" class="mx-10 card-animated mb-2 responsive-cards">
           <v-list-item three-line>
             <v-list-item-content class="icon-options">
               <div class="overline mb-4">
@@ -57,7 +57,7 @@
   export default {
 
     methods: {
-      // Não consegui por $router.push 'in_code' entao eupus aqui
+      // Não consegui por $router.push 'in_code' entao eupus aqui.
       go_to(link_path) {
         this.$router.push({name :link_path})
       }
@@ -67,7 +67,24 @@
 </script>
 
 <style lang="scss" scoped>
-  .icon-options {
-    text-align: center;
+
+.icon-options {
+  text-align: center;
+}
+
+.card-animated {
+  transition: all .2s ease-in-out;
+}
+
+.card-animated:hover {
+  border-color: #3f50b4;
+  color: #3f50b4;
+}
+
+@media screen and (max-width: 600px) {
+  .responsive-cards {
+    width: 100%;
   }
+}
+
 </style>

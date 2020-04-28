@@ -82,8 +82,9 @@ app.get('/product', function (req, res) {
   exec_mysql_query('SELECT * FROM product', res);
 });
 
+// Deve busca com query
 app.get('/product/name', function (req, res) {
-  exec_mysql_query('SELECT name FROM product', res);
+  exec_mysql_query(`SELECT DISTINCT product FROM log WHERE city = '${req.query.city}'`, res);
 });
 
 app.post('/product', (req, res) =>{
