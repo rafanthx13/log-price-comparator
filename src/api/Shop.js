@@ -18,7 +18,7 @@ export default class {
   }
 
   static getShopsByCity(city_name){
-    return http.get(shop.getShopsNames + city_name);
+    return http.get(shop.getShopsByCity + city_name);
   }
 
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <!-- <h1 class="main-title">INSERT CITY</h1> -->
+    <notifications group="error-login" position="top right" style="top: 10px;"/>
 
       <v-container fluid style="text-align:center">
 
@@ -27,9 +27,15 @@
                 <ValidationProvider v-slot="{ errors }" name="product" rules="required">
                   <v-select :items="items.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="city" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="price" rules="required">
                   <v-text-field label="Preço" v-model.lazy="money" :error-messages="errors" v-money="myMaskMoney" required></v-text-field>
                 </ValidationProvider>
+                <!-- {{ this.money }} -->
+                <!-- Time -->
+                <ValidationProvider v-slot="{ errors }" name="date" rules="required|date">
+                  <v-text-field label="Data" v-model="logData.date" :error-messages="errors" v-mask="dateMask" placeholder="dd/mm/yyyy HH:mm" :disabled="!setDate"></v-text-field>
+                </ValidationProvider>
+                <v-switch v-model="setDate" class="ma-4" :label="labelDate(setDate)"></v-switch>
               </v-card-text>
 
               <!-- Card Buttons -->
@@ -61,6 +67,7 @@ import Product from '../../api/Product'
 
 import {VMoney} from 'v-money'
 import moment from 'moment'
+import { mask } from 'vue-the-mask'
 
 setInteractionMode('eager')
 
@@ -74,6 +81,13 @@ extend('max', {
   message: 'O campo não pode ser maior que 30',
 })
 
+extend('date', {
+  validate: value => {
+    return moment(value, "DD/MM/YYYY HH:mm").isValid();
+  },
+  message: 'Data Inválida',
+});
+
 export default {
 
   components: {
@@ -81,7 +95,7 @@ export default {
     ValidationObserver,
   },
 
-  directives: {money: VMoney},
+  directives: {money: VMoney, mask},
 
   data() {
     return {
@@ -104,7 +118,9 @@ export default {
       },
       // O v-mask nao permite alterar o elemetno mascarado, entao, 
       // deixamos separado e depois na hora de enviar converte para o logData.price
+      setDate: false,
       money: '',
+      dateMask: '##/##/#### ##:##',
       myMaskMoney: {
         decimal: ',',
         thousands: '.',
@@ -139,9 +155,9 @@ export default {
 
     'logData.shop': function(){
       if(this.logData.shop){
-        Product.getProductsNames().then(result => {
+        Product.getProductsNames(this.logData.city).then(result => {
           if(result){
-            let ProductsNameList = this.getListOne('name', result.data)
+            let ProductsNameList = this.getListOne('product', result.data)
             // console.log(ProductsNameList)
             this.items.product = ProductsNameList
           } else {
@@ -161,6 +177,7 @@ export default {
 
 
   created(){
+    this.logData.date = moment().format("DD/MM/YYYY HH:mm")
     City.getCities().then( result => {
       if(result){
           this.items.city = this.getListOne('city', result.data)
@@ -179,9 +196,9 @@ export default {
       // Metodo do componente que retorna um Promisse que 
       // tem como retorno 'resul' :: Boolean da validação
       this.$refs.observer.validate().then(result => {
-        this.logData.date = moment().format("YYYY-MM-DD")
-        this.logData.price = this.formatMoneyToSend(this.money)
-        if (result) {
+        this.logData.price = parseFloat(this.money.slice(3).replace(".","").replace(",","."))
+        if (result && this.logData.price != 0) {
+          
           Log.post(this.logData).then( () => {
             this.$swal({
               title: "Sucesso!",
@@ -190,8 +207,7 @@ export default {
               button: "Ok!",
             });
             this.clear()
-          }).catch( err => {
-            console.error(err)
+          }).catch( () => {
             this.$swal({
               title: "Erro!",
               text: "Erro ao insrerir a Cidade",
@@ -199,18 +215,29 @@ export default {
               button: "Ok!",
             });
           })
-        } 
+        } else if (this.logData.price == 0){
+          this.$notify({
+            group: 'error-login',
+            title: "Erro no preço",
+            text: "Preço não pode ser Zero",
+            duration: 6000,
+            type: 'error',
+          });
+        }
       }).catch( err => {
         console.log(err)
+        this.$notify({
+          group: 'error-login',
+          title: "Erro no formulário 2",
+          text: "",
+          duration: 6000,
+          type: 'error',
+        });
       });
     },
 
     clear() {
-      // this.logData.city = ''
-      // this.logData.shop = ''
-      this.logData.product = null
       this.logData.price = null
-      // this.$refs.observer.reset()
     },
 
     // Pega um array de Um mesmo Ojeto JSON e retorno só os elementos
@@ -222,9 +249,13 @@ export default {
       return aList
     },
 
-    formatMoneyToSend(maskedMoney){
-      let deMaskMoney = parseFloat(maskedMoney.slice(3).replace(".","").replace(",","."))
-      return deMaskMoney
+    // formatMoneyToSend(maskedMoney){
+    //   let deMaskMoney = 
+    //   return deMaskMoney
+    // },
+
+    labelDate(bool){
+      return bool ? "Escolher Data" : "Hoje"
     },
 
   },
