@@ -13,6 +13,14 @@ export default class {
     return http.post(shop.post, body);
   }
 
+  static put(body){
+    return http.put(shop.put + body.product_id, body);
+  }
+
+  static delete(item){
+    return http.delete(shop.delete  + item.product_id);
+  }
+
   static getShopsNames(){
     return http.get(shop.getShopsNames);
   }

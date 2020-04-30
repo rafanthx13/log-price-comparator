@@ -1,8 +1,6 @@
 <template>
   <div>
 
-    <!-- <h1 class="main-title">Inserir Cidade</h1> -->
-
     <v-container fluid style="text-align:center">
 
       <v-card name="form-district" class="pb-7" elevation="6">

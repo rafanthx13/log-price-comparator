@@ -20,6 +20,10 @@ import InsertCity from '@/components/Insert/InsertCity.vue';
 import InsertShop from '@/components/Insert/InsertShop.vue';
 import InsertLog from '@/components/Log/InsertLog.vue';
 
+import ListMain from '@/components/List/ListMain.vue';
+import ListCity from '@/components/List/ListCity.vue';
+import ListShop from '@/components/List/ListShop.vue';
+import ListProduct from '@/components/List/ListProduct.vue';
 
 Vue.use(VueRouter)
 
@@ -45,7 +49,11 @@ let router = new VueRouter ({
         { path: '/insert/shop', name: 'Insert Shop', component: InsertShop},
         { path: '/insert/product', name: 'Insert Product', component: InsertProduct},
         { path: '/search', name: "Search", component: SearchMain },
-        { path: '/log', name: 'Log', component: InsertLog}
+        { path: '/log', name: 'Log', component: InsertLog },
+        { path: '/list', name: 'List Main', component: ListMain },
+        { path: '/list/city', name: 'List City', component: ListCity },
+        { path: '/list/shop', name: 'List Shop', component: ListShop },
+        { path: '/list/product', name: 'List Product', component: ListProduct },
         
       ],
       meta: { 
@@ -70,7 +78,6 @@ let router = new VueRouter ({
       component: NotFound,
       name: 'Not Found'}
   ]
-
 });
 
 // Regula aonde vai executar algo antes de entrar
@@ -97,62 +104,5 @@ router.beforeEach((to, from, next) => {
 
 })
 
-
-/*
-
-let profileMenu = {
-  path: '/profile',
-  component: DashboardLayout,
-  redirect: '/profile/edit',
-  children: [
-    {
-      path: 'edit',
-      name: 'Buttons',
-      component: Buttons
-    },
-    {
-      path: 'list-profile',
-      name: 'Gerenciar Perfis dos Usuários',
-      component: ListProfiles
-    },
-    {
-      path: 'list-roles',
-      name: 'Listar Permissões',
-      component: RoleProfiles
-    },
-    {
-      path: 'grid-system',
-      name: 'Grid System',
-      component: GridSystem
-    },
-    {
-      path: 'panels',
-      name: 'Panels',
-      component: Panels
-    },
-    {
-      path: 'sweet-alert',
-      name: 'Sweet Alert',
-      component: SweetAlert
-    },
-    {
-      path: 'notifications',
-      name: 'Notifications',
-      component: Notifications
-    },
-    {
-      path: 'icons',
-      name: 'Icons',
-      component: Icons
-    },
-    {
-      path: 'typography',
-      name: 'Typography',
-      component: Typography
-    }
-
-  ]
-};
-*/
 
 export default router

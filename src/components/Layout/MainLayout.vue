@@ -35,7 +35,6 @@
           </v-list-item-content>
         </v-list-item>
 
-
         <!-- Log -->
         <v-list-item @click="go_to('Log')">
           <v-list-item-action>
@@ -56,16 +55,17 @@
           </v-list-item-content>
         </v-list-item>
 
-        <!-- Listar 
-        <v-list-item @click="go_to('List')">
-          <v-list-item-action>
-            <v-icon>mdi-view-list</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Pesquisar</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        -->
+        <!-- List (To admins) -->
+        <template v-if="this.$store.getters.getUser.user_type == 'admin'">
+          <v-list-item @click="go_to('List Main')">
+            <v-list-item-action>
+              <v-icon>mdi-view-list</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Listar</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
 
       </v-list>
     </v-navigation-drawer>
@@ -96,131 +96,11 @@
 
         </v-list>
 
-<!--         <v-list-tile>
-          <v-list-tile-action>
-            <v-icon>mdi-exit-to-app</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Sair</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-
       </v-menu>
-
-      <!-- <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition">
-        <v-btn icon large flat slot="activator" :ripple="false">
-          <v-avatar size="42px">
-            <img src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Sunglasses&hairColor=Black&facialHairType=Blank&clotheType=CollarSweater&clotheColor=Black&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Light"/>
-          </v-avatar>
-        </v-btn>
-        <v-list>
-
-          <v-list-tile>
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Contato</v-list-item-title>
-            </v-list-item-content>
-          </v-list-tile>
-
-          <v-list-tile>
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Contato</v-list-item-title>
-            </v-list-item-content>
-          </v-list-tile>
-
-
-          <v-list-tile>
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Contato</v-list-item-title>
-            </v-list-item-content>
-          </v-list-tile>
-
-
-        </v-list> 
-
-      </v-menu>  -->
-
-      <!-- <v-list>
-        <v-list-tile
-          v-for="(item,index) in items"
-          :key="index"
-          :to="!item.href ? { name: item.name } : null"
-          :href="item.href"
-          ripple="ripple"
-          :disabled="item.disabled"
-          :target="item.target"
-          @click="item.click">
-          <v-list-tile-action v-if="item.icon">
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list> 
-
-
-      <v-list>
-        <v-list-tile
-          v-for="(item,index) in items"
-          :key="index"
-          :to="!item.href ? { name: item.name } : null"
-          :href="item.href"
-          ripple="ripple"
-          :disabled="item.disabled"
-          :target="item.target"
-          @click="item.click">
-          <v-list-tile-action v-if="item.icon">
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list> 
-
-       
-        <v-list-item @click="go_to('About Me')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Contato</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> 
-
-
-         <v-list>
-          <v-list-tile>
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Contato</v-list-item-title>
-            </v-list-item-content>
-          </v-list-tile>
-        </v-list> 
-      -->
-
-
-       
-
-
-
 
     </v-app-bar>
 
-    <!-- <router-view></router-view> -->
-
-    <!-- Conteudo -->
+    <!-- Content -->
     <v-content>
       <v-container fluid fill-height>
         <v-layout justify-center>
@@ -233,7 +113,7 @@
 
     <!-- Footer -->
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; 2019</span>
+      <span class="white--text">&copy; 2020 | {{ this.$store.getters.getVersion.version }}</span>
     </v-footer>
 
   </v-app>
@@ -249,9 +129,8 @@
     },
 
     methods: {
-      // Não consegui por $router.push 'in_code' entao eupus aqui
       go_to(link_path) {
-        this.$router.push({name: link_path}).catch(() => {}) // evitar um Eror NavegationDuplicate
+        this.$router.push({name: link_path}).catch(() => {}) // evitar um Error de NavegationDuplicate
       },
 
       log_out(){
@@ -266,15 +145,15 @@
 </script>
 
 <style lang="scss" >
-.main-title {
-  text-align: center;
-}
+  .main-title {
+    text-align: center;
+  }
 
-.title-form {
-  font-size: 1.3rem !important;
-}
+  .title-form {
+    font-size: 1.3rem !important;
+  }
 
-.swal-footer {
-  text-align: center;
-}
+  .swal-footer {
+    text-align: center;
+  }
 </style>

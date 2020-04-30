@@ -26,6 +26,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
+function today(){
+  let d = new Date();
+  let f = n => n < 10 ? "0" + n : n ;
+  let date = `${f(d.getDate())}/${f(d.getMonth())}/${f(d.getFullYear())}`;
+  let time = `${f(d.getHours())}h:${f(d.getMinutes())}m:${f(d.getSeconds())}s`
+  return date + " : " + time;
+}
+
 // API ROUTES
 
 app.get('/', function (req, res) {
@@ -42,6 +50,18 @@ app.get('/city/city', function (req, res) {
   exec_mysql_query('SELECT city FROM city', res);
 });
 
+app.put('/city/:id', function (req, res) {
+  exec_mysql_query(`UPDATE city SET 
+	city = '${req.body.city}', 
+	state = '${req.body.state}',
+	country = '${req.body.country}' 
+	WHERE city_id = '${req.params.id}';`, res);
+});
+
+app.delete('/city/:id', function (req, res) {
+  exec_mysql_query(`DELETE FROM city WHERE city_id = '${req.params.id}';`, res);
+});
+
 app.post('/city', (req, res) =>{
   const city = req.body.city;
   const state = req.body.state;
@@ -53,6 +73,21 @@ app.post('/city', (req, res) =>{
 
 app.get('/shop', function (req, res) {
   exec_mysql_query('SELECT * FROM shop', res);
+});
+
+app.put('/shop/:id', function (req, res) {
+  exec_mysql_query(`UPDATE shop SET 
+    name = '${req.body.name}', 
+    cep = '${req.body.cep}',
+    number = '${req.body.number}',
+    street = '${req.body.street}',
+    neighbor = '${req.body.neighbor}',
+    city = '${req.body.city}' 
+  WHERE shop_id = '${req.params.id}';`, res);
+});
+
+app.delete('/shop/:id', function (req, res) {
+  exec_mysql_query(`DELETE FROM shop WHERE shop_id = '${req.params.id}';`, res);
 });
 
 app.get('/shop/name', function (req, res) {
@@ -85,6 +120,17 @@ app.get('/product', function (req, res) {
 // Deve busca com query
 app.get('/product/name', function (req, res) {
   exec_mysql_query(`SELECT DISTINCT product FROM log WHERE city = '${req.query.city}'`, res);
+});
+
+app.put('/product/:id', function (req, res) {
+  exec_mysql_query(`UPDATE product SET 
+  name = '${req.body.name}', 
+  type = '${req.body.type}'
+  WHERE product_id = '${req.params.id}';`, res);
+});
+
+app.delete('/product/:id', function (req, res) {
+  exec_mysql_query(`DELETE FROM product WHERE product_id = '${req.params.id}';`, res);
 });
 
 app.post('/product', (req, res) =>{
@@ -144,14 +190,14 @@ app.post('/login', function(req, res) {
       if(error) 
         res.status(401).send({ auth: false, token: null, message: "Strange Error" });
       if(results === undefined)
-        res.status(401).send({ auth: false, token: null, message: "results is undefinied. Restar Application" });
+        res.status(401).send({ auth: false, token: null, message: "results is undefinied. Reset Application" });
       if(results.length <= 0)
         res.status(404).send({ auth: false, token: null, message: "User not found"});
       if (bcrypt.compareSync(password, results[0].password)){ 
         let token = jwt.sign({ id: results[0].id }, API_SECRET, {
           expiresIn: 86400 // expires in 24 hours
         });
-        res.status(200).send({ auth: true, token: token, user: user_name });
+        res.status(200).send({ auth: true, token: token, user_name: user_name, user_type: results[0].user_type });
       } else {
         res.status(401).send({ auth: false, token: null, message: "Fail in JWT Validation" });
       }
@@ -175,6 +221,12 @@ app.get('/auth', function(req, res) {
   });
 });
 
+// USER
+
+// app.GET('/user/:id', function (req, res) {
+//   exec_mysql_query(`SELECT user_type FROM user WHERE id = '${req.params.id}';`, res);
+// });
+
 // Swagger API Access
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -184,5 +236,5 @@ app.use(function(req, res, next) {
 });
 
 app.listen(PORT, function () {
-  console.log('App listening on port ' + PORT + " ...");
+  console.log('App listening on port ' + PORT + " at " + today());
 });

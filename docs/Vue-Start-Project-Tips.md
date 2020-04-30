@@ -1,6 +1,6 @@
-# App Comparatorator - DEscriço de cada etapa
+# Tips to Vue App
 
-## 01. Vue CLI
+## Vue CLI - Criando projeto Vue
 
 ### Pra que serve
 
@@ -85,42 +85,8 @@ projeto-simples/
 
 Vai gerar a pasta `dist/` E rodar o processo de construção da pasta que será realmente exportada para produção
 
-#### Vue UI
+### Vue UI - Plugins para o Vue por GUI
 
 `vue ui` forma gráfica de ver o projeto, dependencia e plugins do vue; os plugins sâo coloados de forma diferente
 
-abre no localhost:8080 uma GUI para gerenciar os plugins do VUe  
-
-## PLugins
-
-Vuetofy : COmponetne MaterialDesign para Vue
-
-## Icons
-
-Link de como usar com Vuetify : https://vuetifyjs.com/pt-BR/customization/icons
-
-Usando MaterialDesignIcons. Link: https://cdn.materialdesignicons.com/2.0.46/
-É necessário importar com npm, pois vem poucos itens e a maioria que vc quiser usar nao vai ter la com `npm install @mdi/font -D`
-
-# BD
-
-INstalar MYSQL WORKBENCH e acessalo.
-
-No ubuntu é so pesquisar no simbolo do unbutu
-
-MYS QL
-
-no  ubnutu a maquina ja liga com o processo do mysql raodano. Se voce tirar, pra colocar de voltae funcionar use o comando:
-
-service mysql start
-
-e veja se apbriu o processo mysqld
-
-exec:
-
-systemctl status mysql.service
-
-
-# Express
-
-Precisa usar cors no express
+Abre no localhost:8080 uma GUI para gerenciar os plugins do Vue

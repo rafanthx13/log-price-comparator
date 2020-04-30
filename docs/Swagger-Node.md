@@ -19,7 +19,7 @@ O YAML foi feito essencialmente, para guardar dados (assim como os bancos de dad
 
 Em relação ao XML e JSON a legibilidade é muito mais fácil e você escreve mais facilmente. Além disso, ele é muito bem documentado e possui diversas bibliotecas.
 
-### Como configurara
+### Como configurar
 
 **Instalar swagger-ui-express**
 ````

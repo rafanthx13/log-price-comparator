@@ -3,16 +3,6 @@
 
     <SpinnerLoader v-if="spinner"></SpinnerLoader>
 
-     <!-- <v-progress-circular
-        :indeterminate="spinner"
-        :rotate="0"
-        :size="66"
-        :width="3"
-        color="light-blue"
-        class="v-spinner"
-      >
-      </v-progress-circular> -->
-
     <v-content>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center" style="margin-left: 1px;">
@@ -21,7 +11,7 @@
 
               <v-toolbar color="primary" dark flat>
                 <v-toolbar-title>Log-Comparator App</v-toolbar-title>
-                <span style="margin-left: 10px;">&nbsp;&nbsp;v1.0.3</span>
+                <span style="margin-left: 10px;">&nbsp;&nbsp; {{ this.$store.getters.getVersion.version }}</span>
               </v-toolbar>
               
               <ValidationObserver ref="observer">
@@ -130,8 +120,8 @@ export default {
         this.spinner = true;
         if (result) {
           Login.login(this.loginForm).then( (result) => {
-            localStorage.setItem('user', result.data.user)
-            localStorage.setItem('token', result.data.token)
+            localStorage.setItem('token', result.data.token);
+            this.$store.commit("setUser", result.data);
             if (localStorage.getItem('token') != null){
               this.spinner = false;
               this.$router.push({name: 'Home'})

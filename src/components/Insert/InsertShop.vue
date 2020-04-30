@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <h1 class="main-title">Inserir Lojas</h1> -->
 
     <v-container fluid style="text-align:center">
       <v-card class="pb-7" elevation="6">
