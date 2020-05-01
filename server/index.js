@@ -26,13 +26,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
+/*
+const cacheControl = require("express-cache-controller")
+app.use(cacheControl({
+  noCache: true
+}));
+*/
+
 function today(){
   let d = new Date();
   let f = n => n < 10 ? "0" + n : n ;
   let date = `${f(d.getDate())}/${f(d.getMonth())}/${f(d.getFullYear())}`;
   let time = `${f(d.getHours())}h:${f(d.getMinutes())}m:${f(d.getSeconds())}s`
-  return date + " : " + time;
+  return date + " " + time;
 }
+
+// CORS 
+/*
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+*/
 
 // API ROUTES
 
@@ -119,7 +135,7 @@ app.get('/product', function (req, res) {
 
 // Deve busca com query
 app.get('/product/name', function (req, res) {
-  exec_mysql_query(`SELECT DISTINCT product FROM log WHERE city = '${req.query.city}'`, res);
+  exec_mysql_query('SELECT DISTINCT name FROM product', res);
 });
 
 app.put('/product/:id', function (req, res) {
@@ -143,8 +159,24 @@ app.post('/product', (req, res) =>{
 
 // LOG
 
+// {"log_id":1,"product":"Leite","price":3.35,"shop":"loja-test","city":"Uberlândia","date":"2020-02-19"}
+
 app.get('/log', (req, res) => {
-  exec_mysql_query('SELECT * FROM log', res);
+  exec_mysql_query('SELECT log_id, product, FORMAT(price, 2) as price, shop, city, date FROM log', res);
+});
+
+app.put('/log/:id', function (req, res) {
+  exec_mysql_query(`UPDATE log SET 
+    product = '${req.body.product}', 
+    price = '${req.body.price}', 
+    shop = '${req.body.shop}', 
+    city = '${req.body.city}', 
+    date = '${req.body.date}'
+  WHERE log_id = '${req.params.id}';`, res);
+});
+
+app.delete('/log/:id', function (req, res) {
+  exec_mysql_query(`DELETE FROM log WHERE log_id = '${req.params.id}';`, res);
 });
 
 app.post('/log/get', (req, res) => {

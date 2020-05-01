@@ -123,8 +123,8 @@ mysql > source /home/rhavel/Documentos/Personal Projects/Comparator-App/price-lo
 
 **Verificar**
 
-+ Vai automaticamente ir pro schema DB_NAME, entÂo, vocÊ já está dentro do schema, agora é só acessar como o MYSQL_WORKBENAHC
-+ não esquecer que tem que por `;`
++ Vai automaticamente ir pro schema DB\_NAME, então, você já está dentro do schema, agora é só acessar como o MYSQL_WORKBENC
++ não esquecer que tem que por `;` nos comandos.
 
 ````
 > mysql> describe user;
@@ -155,3 +155,13 @@ na pasta do projeto que tem o heroku remote
 ````
 > heroku local
 ````
+
+### Ver Logs do Heroku Remote
+
+Aonde estiver o projeto backEnd rode
+
+````
+> heroku logs --tail
+````
+
+

@@ -52,6 +52,8 @@ const routes = {
     },
     log: {
       post: URL + '/log',
+      put: URL + '/log/',
+      delete: URL + '/log/',
       getAll: URL +  '/log',
       getPosted: URL + '/log/get'
     },

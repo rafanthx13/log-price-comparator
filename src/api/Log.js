@@ -13,6 +13,14 @@ export default class {
     return http.post(log.post, body);
   }
 
+  static put(body){
+    return http.put(log.put + body.log_id, body);
+  }
+
+  static delete(item){
+    return http.delete(log.delete  + item.log_id);
+  }
+
   static getPosted(body){
     return http.post(log.getPosted, body);
   }

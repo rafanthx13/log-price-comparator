@@ -40,6 +40,17 @@
           </v-list-item>
         </v-card>
 
+        <v-card outlined @click="go_to('List Log')" class="mx-10 card-animated mb-2 responsive-cards">
+          <v-list-item three-line>
+            <v-list-item-content class="icon-options">
+              <div class="overline mb-4">
+                <v-icon>mdi-cart-plus</v-icon>
+              </div>
+              <v-list-item-title class="headline mb-1">Listar Logs</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+
       </v-row>
 
     </v-container>

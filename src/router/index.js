@@ -24,6 +24,7 @@ import ListMain from '@/components/List/ListMain.vue';
 import ListCity from '@/components/List/ListCity.vue';
 import ListShop from '@/components/List/ListShop.vue';
 import ListProduct from '@/components/List/ListProduct.vue';
+import ListLog from '@/components/List/ListLog.vue';
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,7 @@ let router = new VueRouter ({
         { path: '/list/city', name: 'List City', component: ListCity },
         { path: '/list/shop', name: 'List Shop', component: ListShop },
         { path: '/list/product', name: 'List Product', component: ListProduct },
+        { path: '/list/log', name: 'List Log', component: ListLog },
         
       ],
       meta: { 

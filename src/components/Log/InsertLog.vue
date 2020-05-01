@@ -33,7 +33,7 @@
                 <!-- {{ this.money }} -->
                 <!-- Time -->
                 <ValidationProvider v-slot="{ errors }" name="date" rules="required|date">
-                  <v-text-field label="Data" v-model="logData.date" :error-messages="errors" v-mask="dateMask" placeholder="dd/mm/yyyy HH:mm" :disabled="!setDate"></v-text-field>
+                  <v-text-field label="Data" v-model="formDate" :error-messages="errors" v-mask="dateMask" placeholder="dd/mm/yyyy HH:mm" :disabled="!setDate"></v-text-field>
                 </ValidationProvider>
                 <v-switch v-model="setDate" class="ma-4" :label="labelDate(setDate)"></v-switch>
               </v-card-text>
@@ -65,7 +65,7 @@ import City from '../../api/City'
 import Shop from '../../api/Shop'
 import Product from '../../api/Product'
 
-import {VMoney} from 'v-money'
+import { VMoney } from 'v-money'
 import moment from 'moment'
 import { mask } from 'vue-the-mask'
 
@@ -95,7 +95,7 @@ export default {
     ValidationObserver,
   },
 
-  directives: {money: VMoney, mask},
+  directives: { money: VMoney, mask},
 
   data() {
     return {
@@ -120,6 +120,7 @@ export default {
       // deixamos separado e depois na hora de enviar converte para o logData.price
       setDate: false,
       money: '',
+      formDate: '',
       dateMask: '##/##/#### ##:##',
       myMaskMoney: {
         decimal: ',',
@@ -157,8 +158,7 @@ export default {
       if(this.logData.shop){
         Product.getProductsNames(this.logData.city).then(result => {
           if(result){
-            let ProductsNameList = this.getListOne('product', result.data)
-            // console.log(ProductsNameList)
+            let ProductsNameList = this.getListOne('name', result.data)
             this.items.product = ProductsNameList
           } else {
             this.items.product = []
@@ -177,11 +177,10 @@ export default {
 
 
   created(){
-    this.logData.date = moment().format("DD/MM/YYYY HH:mm")
+    this.formDate = moment().format("DD/MM/YYYY HH:mm")
     City.getCities().then( result => {
       if(result){
           this.items.city = this.getListOne('city', result.data)
-          // console.log(this.getListOne('city', result.data))
         } else {
           console.log("fail 442")
         }
@@ -196,7 +195,9 @@ export default {
       // Metodo do componente que retorna um Promisse que 
       // tem como retorno 'resul' :: Boolean da validação
       this.$refs.observer.validate().then(result => {
-        this.logData.price = parseFloat(this.money.slice(3).replace(".","").replace(",","."))
+        this.logData.price = parseFloat(this.money.slice(3).replace(".","").replace(",","."));
+        this.logData.date = this.formDate;
+        console.log(this.logData.date);
         if (result && this.logData.price != 0) {
           
           Log.post(this.logData).then( () => {

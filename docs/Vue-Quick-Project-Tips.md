@@ -1,3 +1,11 @@
+==> TODO
+
+EM ListLOg está dando erros com o swal, pois ele roda dentro de um dialog, entâo tem que dar um jeito, testa primeiro.
+
+==> cOPIAR POR JSON
+
+JSON.parse(JSON.stringify(o));
+
 => Copiar Valor Real Física
 
 variabel.valueOf(), vai retornar um valor e nâo vai ser referencia
