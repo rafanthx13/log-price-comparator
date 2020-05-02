@@ -10,7 +10,7 @@ if(window.location.hostname == 'localhost'){
 
 const version = {
   state: {
-    version: "v1.0.4"
+    version: "v1.0.5"
   },
   mutations: {},
   actions: {},

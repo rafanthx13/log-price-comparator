@@ -60,13 +60,13 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <ValidationProvider v-slot="{ errors }" name="price" rules="required">
-                              <v-text-field v-model.lazy="editedItem.price" :error-messages="errors" label="Preço" v-money="myMaskMoney" required></v-text-field>
+                            <ValidationProvider v-slot="{ errors }" name="price" rules="required|price">
+                              <v-text-field v-model.lazy="editedItem.price" :error-messages="errors" label="Preço" prefix="R$" hint="Formato: ..#.###,##" required></v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <ValidationProvider v-slot="{ errors }" name="date" rules="required">
-                              <v-text-field v-model="editedItem.date" :error-messages="errors" label="Data" required></v-text-field>
+                            <ValidationProvider v-slot="{ errors }" name="date" rules="required|date">
+                              <v-text-field v-model="editedItem.date" :error-messages="errors" label="Data" hint="dd/mm/YYYY HH:mm" required></v-text-field>
                             </ValidationProvider>
                           </v-col>
                         </v-row>
@@ -104,8 +104,8 @@
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field v-model="deletedItem.product" label="Produto" outlined disabled></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field v-model.lazy="deletedItem.price" label="Preço" v-money="myMaskMoney" outlined disabled></v-text-field>
+                        <v-col cols="12" sm="6" md="4"> <!-- v-money="myMaskMoney" -->
+                          <v-text-field v-model.lazy="deletedItem.price" label="Preço" prefix="R$" outlined disabled></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
                           <v-text-field v-model="deletedItem.date" label="Data" outlined disabled></v-text-field>
@@ -147,15 +147,31 @@ import { required } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, 
   ValidationProvider, setInteractionMode } from 'vee-validate'
 
-import { mask } from 'vue-the-mask'
-import { VMoney } from 'v-money'
+import moment from 'moment'
 
 setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir esse campo',
-})
+  message: fieldName =>  'É necessário inserir o campo ' + fieldName,
+});
+
+extend('price', {
+  validate: value => {
+    // Regex original: ^(\d{1,3}(\.\d{3})*|\d+)(\,\d{2})?$
+    return value.match(new RegExp("^(\\d{1,3}(\\.\\d{3})*|\\d+)(\\,\\d{2})?$", 'g'));
+  },
+  message: 'Preço Inválido: Formato: #.###,##',
+});
+
+
+extend('date', {
+  validate: value => {
+    return moment(value, "DD/MM/YYYY HH:mm").isValid();
+  },
+  message: 'Data Inválida: Deve ter o formato DD/MM/YYYY HH:mm',
+});
+
 
 import Log from '../../api/Log';
 
@@ -165,8 +181,6 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-
-  directives: { money: VMoney, mask},
 
   data() {
     return {
@@ -279,27 +293,27 @@ export default {
     confirmEdit(){
       this.$refs.editForm.validate().then( (formIsValid) => {
         if(formIsValid){
-          let edit_item = JSON.parse(JSON.stringify(this.editedItem));
-          edit_item.price = parseFloat( edit_item.price.slice(3).replace(".","").replace(",",".") );
-          Log.put(edit_item)
+          this.editedItem.price = this.editedItem.price.replace('.','').replace(',','.')
+          Log.put(this.editedItem)
             .then( () => {
-              // this.emitSwal("Sucesso!", "O log foi editado com sucesso!", "success");
-              this.$notify({
-                group: 'error-notify',
-                title: "Editado com sucesso!",
-                text: "Log Editado!",
-                duration: 4000,
-                type: 'success',
+              this.$swal({
+                title: "Sucesso",
+                text: "O Log foi editado com sucesso!",
+                icon: "success",
+                button: "Ok!",
+              }).then( value => {
+                if(value){
+                  Object.assign(this.rows[this.editedIndex], this.editedItem)
+                  this.editClose();  
+                }
               });
-              Object.assign(this.rows[this.editedIndex], this.editedItem)
-              this.editClose();
             })
             .catch( err => {
               let msg = err.response.status == 404  
                 ? "A loja já está sendo referenciada em outra tabela e NÃO PODE SER EDITADO" 
                 : "Erro ao Editar log";
               this.emitSwal("Erro!", msg, "error");
-              this.deleteClose();
+              this.editClose();
             });
         } else {
           this.$notify({
@@ -316,9 +330,17 @@ export default {
     confirmDelete(){
       Log.delete(this.deletedItem)
         .then( () => {
-          this.rows.splice(this.deletedIndex, 1)
-          this.emitSwal("Sucesso!", "O Log foi deletado com sucesso!", "success");
-          this.editClose();
+          this.$swal({
+            title: "Sucesso",
+            text: "O Log foi deletado com sucesso!",
+            icon: "success",
+            button: "Ok!",
+          }).then( value => {
+            if(value){
+              this.rows.splice(this.deletedIndex, 1)
+              this.deleteClose();  
+            }
+          });
         })
         .catch( err => {
           let msg = err.response.status == 404 

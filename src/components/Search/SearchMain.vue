@@ -98,7 +98,7 @@ setInteractionMode('eager')
 extend('required', {
   ...required,
   message: (fieldName) => {
-    return 'É necessário inserir dados nesse campo:' + fieldName
+    return 'XXX É necessário inserir dados nesse campo:' + fieldName
   }
 })
 

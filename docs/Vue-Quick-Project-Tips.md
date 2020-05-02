@@ -1,8 +1,4 @@
-==> TODO
-
-EM ListLOg está dando erros com o swal, pois ele roda dentro de um dialog, entâo tem que dar um jeito, testa primeiro.
-
-==> cOPIAR POR JSON
+==> COPIAR POR JSON
 
 JSON.parse(JSON.stringify(o));
 

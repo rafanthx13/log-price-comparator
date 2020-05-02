@@ -78,7 +78,7 @@ export default {
 
 <style lang="scss">
 
-$SECONDARY: #1e2123;
+$SECONDARY: #b5cbda; /* BackGround */
 $BLUEDARK: #1e3369;
 
 .v-carregamento {

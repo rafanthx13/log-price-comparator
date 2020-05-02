@@ -26,8 +26,3 @@ export default class {
   }
 
 }
-
-//?page=2
-
-// INSERT INTO `price_log_bd`.`shop` (`shop_id`, `name`, `cep`, `number`, `street`, `neighbor`, `city`) 
-// VALUES ('4', '435', 't', 'gd', 'gd', 'gsd', 'gs');

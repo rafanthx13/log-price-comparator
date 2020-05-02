@@ -128,12 +128,9 @@ export default {
       return aList.map( item => {
         // Não sei porque mas o 'diff' so funciona corretamente assim
         // se voce dar um 'toString' vai quebrar tudo
-        
         item.date = moment().diff(moment(item.date), 'days')
         item.date = item.date == 0 ? 'Hoje' : 'a ' + item.date + ' dias'
         item.price = this.maskMoney(item.price)
-        // console.log(item)
-
         return item
       })
 
@@ -143,7 +140,6 @@ export default {
       let currency = price.toFixed(2).split('.');
       currency[0] = "R$ " + currency[0].split(/(?=(?:...)*$)/).join('.');
       return currency.join(',');
-      // return price
     },
 
     round_two(price){

@@ -26,13 +26,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
-/*
-const cacheControl = require("express-cache-controller")
-app.use(cacheControl({
-  noCache: true
-}));
-*/
-
 function today(){
   let d = new Date();
   let f = n => n < 10 ? "0" + n : n ;
@@ -41,8 +34,13 @@ function today(){
   return date + " " + time;
 }
 
-// CORS 
 /*
+// CORS 
+const cacheControl = require("express-cache-controller")
+app.use(cacheControl({
+  noCache: true
+}));
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -111,7 +109,6 @@ app.get('/shop/name', function (req, res) {
 });
 
 app.get('/shop/city', function (req, res) {
-  console.log(req.query.city_name)
   exec_mysql_query(`SELECT name FROM shop WHERE city = '${req.query.city_name}'`, res);
 });
 
@@ -159,10 +156,10 @@ app.post('/product', (req, res) =>{
 
 // LOG
 
-// {"log_id":1,"product":"Leite","price":3.35,"shop":"loja-test","city":"Uberlândia","date":"2020-02-19"}
-
 app.get('/log', (req, res) => {
-  exec_mysql_query('SELECT log_id, product, FORMAT(price, 2) as price, shop, city, date FROM log', res);
+  exec_mysql_query(`SELECT log_id, product, 
+    REPLACE( REPLACE( REPLACE( FORMAT(price, 2), ',', '$'), '.', ','), '$', '.') as price,
+    shop, city, date FROM log`, res);
 });
 
 app.put('/log/:id', function (req, res) {
@@ -205,7 +202,6 @@ app.post('/register', function(req, res) {
   let user_name = req.body.user_name;
   let email = req.body.email;
   let password = bcrypt.hashSync(req.body.password, salt);
-  console.log(password);
   let user_type = req.body.user_type || '';
   let query = ` INSERT INTO user (user_name, email, password, user_type)
     VALUES ( '${user_name}', '${email}', '${password}', '${user_type}');`
@@ -234,9 +230,7 @@ app.post('/login', function(req, res) {
         res.status(401).send({ auth: false, token: null, message: "Fail in JWT Validation" });
       }
     } catch (e) {
-      // console.error("user_name", user_name, "|| password", password)
-      // console.error("results", results)
-      console.error("e.mesasge in /login: ", e.message);
+      console.error("e.message in /login: ", e.message);
     }
     
   }) 
@@ -252,12 +246,6 @@ app.get('/auth', function(req, res) {
     res.status(200).send(decoded); // pode tirar esse decode, nao vou usar pra nada
   });
 });
-
-// USER
-
-// app.GET('/user/:id', function (req, res) {
-//   exec_mysql_query(`SELECT user_type FROM user WHERE id = '${req.params.id}';`, res);
-// });
 
 // Swagger API Access
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

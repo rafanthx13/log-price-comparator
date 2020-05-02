@@ -39,7 +39,6 @@ Vue.use(VueRouter)
 
 let router = new VueRouter ({
   mode: 'history',
-  // linkActiveClass: 'active', // mudei aki
   routes: [
     { path: '/app/', component: MainLayout, redirect: '/home', children: 
       [

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <notifications group="error-login" position="top right" style="top: 10px;"/>
+    <notifications group="error-login" position="top right" style="top: 5px;"/>
 
       <v-container fluid style="text-align:center">
 
@@ -18,21 +18,19 @@
 
               <!-- Card Content -->
               <v-card-text primary-title style="justify-content:center">
-                <ValidationProvider v-slot="{ errors }" name="city" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Cidade" rules="required">
                   <v-select :items="items.city" v-model="logData.city" label="Cidade" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="shop" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Loja" rules="required">
                   <v-select :items="items.shop" v-model="logData.shop" label="Loja" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="product" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Produto" rules="required">
                   <v-select :items="items.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="price" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Preço" rules="required">
                   <v-text-field label="Preço" v-model.lazy="money" :error-messages="errors" v-money="myMaskMoney" required></v-text-field>
                 </ValidationProvider>
-                <!-- {{ this.money }} -->
-                <!-- Time -->
-                <ValidationProvider v-slot="{ errors }" name="date" rules="required|date">
+                <ValidationProvider v-slot="{ errors }" name="Data" rules="required|date">
                   <v-text-field label="Data" v-model="formDate" :error-messages="errors" v-mask="dateMask" placeholder="dd/mm/yyyy HH:mm" :disabled="!setDate"></v-text-field>
                 </ValidationProvider>
                 <v-switch v-model="setDate" class="ma-4" :label="labelDate(setDate)"></v-switch>
@@ -73,7 +71,7 @@ setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir dados nesse campo',
+  message: fieldName =>  'É necessário inserir o campo ' + fieldName,
 })
 
 extend('max', {
@@ -175,7 +173,6 @@ export default {
 
   },
 
-
   created(){
     this.formDate = moment().format("DD/MM/YYYY HH:mm")
     City.getCities().then( result => {
@@ -197,7 +194,6 @@ export default {
       this.$refs.observer.validate().then(result => {
         this.logData.price = parseFloat(this.money.slice(3).replace(".","").replace(",","."));
         this.logData.date = this.formDate;
-        console.log(this.logData.date);
         if (result && this.logData.price != 0) {
           
           Log.post(this.logData).then( () => {
@@ -241,7 +237,7 @@ export default {
       this.logData.price = null
     },
 
-    // Pega um array de Um mesmo Ojeto JSON e retorno só os elementos
+    // Pega um array de Um mesmo objeto JSON e retorno só os elementos
     getListOne(attr, json_list){
       let aList = []
       for (let obj in json_list){
@@ -249,11 +245,6 @@ export default {
       }
       return aList
     },
-
-    // formatMoneyToSend(maskedMoney){
-    //   let deMaskMoney = 
-    //   return deMaskMoney
-    // },
 
     labelDate(bool){
       return bool ? "Escolher Data" : "Hoje"
