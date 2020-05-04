@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "lint": "eslint src/** test/** --fix",
     "secure-mode": "jest --watchAll --verbose=true",
     "production": "pm2 start index.js --name knowledge-backend"

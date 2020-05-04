@@ -1,6 +1,7 @@
 module.exports = (app) => {
 
 		const { DuplicateError } = app.errors.messages;
+		const { exist } = app.errors.functions;
 
 		const getAll = () => {
 			return app.db('product').select()
@@ -15,8 +16,8 @@ module.exports = (app) => {
 		};
 
 		const save = async (product) => {
-			const existProduct = await app.db('product').where({ name: product.name}).first()
-			if(existProduct)
+			const productInBD = await app.db('product').where({ name: product.name}).first()
+			if(exist(productInBD))
 				throw new DuplicateError(`Product '${product.name}' already exists in the database.`);
 
 			return app.db('product').insert(product);

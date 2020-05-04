@@ -1,0 +1,45 @@
+⠋  Building for production...
+
+ WARNING  Compiled with 3 warnings                                      03:37:23
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  fonts/materialdesignicons-webfont.d0066537.woff2 (276 KiB)
+  fonts/materialdesignicons-webfont.b4917be2.woff (395 KiB)
+  fonts/materialdesignicons-webfont.f5111234.ttf (825 KiB)
+  fonts/materialdesignicons-webfont.2d0a0d8f.eot (825 KiB)
+  css/chunk-vendors.369c663f.css (585 KiB)
+  js/chunk-vendors.4d2136ac.js (1.18 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  app (1.84 MiB)
+      css/chunk-vendors.369c663f.css
+      js/chunk-vendors.4d2136ac.js
+      css/app.51bda4f4.css
+      js/app.0254ca5b.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+  File                                   Size              Gzipped
+
+  dist/js/chunk-vendors.4d2136ac.js      1209.49 KiB       351.77 KiB
+  dist/js/app.0254ca5b.js                87.59 KiB         15.84 KiB
+  dist/css/chunk-vendors.369c663f.css    585.08 KiB        79.19 KiB
+  dist/css/app.51bda4f4.css              4.46 KiB          0.94 KiB
+
+  Images and other types of assets omitted.
+
+ DONE  Build complete. The dist directory is ready to be deployed.
+ INFO  Check out deployment instructions at https://cli.vuejs.org/guide/deployment.html
+
