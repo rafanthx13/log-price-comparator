@@ -19,10 +19,10 @@
             <!-- Card Content -->
             <v-card-text primary-title style="justify-content:center; padding-bottom: 0;">
               <v-row style="display: inline-flex;">
-                <ValidationProvider v-slot="{ errors }" name="city" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Cidade" rules="required">
                   <v-select class="form-item select-field" :items="formItems.city" v-model="logData.city" label="Cidade" :error-messages="errors" outlined required></v-select>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="product" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Produto" rules="required">
                   <v-select class="form-item select-field" :items="formItems.product" v-model="logData.product" label="Produto" :error-messages="errors" outlined required :disabled="!logData.city"></v-select>
                 </ValidationProvider>
                 <v-btn class="my-3 mr-3 buttons-form" @click="submit">Pesquisar</v-btn>
@@ -98,7 +98,7 @@ setInteractionMode('eager')
 extend('required', {
   ...required,
   message: (fieldName) => {
-    return 'XXX É necessário inserir dados nesse campo:' + fieldName
+    return 'É necessário inserir o campo:' + fieldName
   }
 })
 
@@ -222,7 +222,7 @@ export default {
       if(this.logData.city){
         Product.getProductsNames(this.logData.city).then(result => {
           if(result){
-            let ProductsNameList = this.getListOne('product', result.data)
+            let ProductsNameList = this.getListOne('name', result.data)
             this.formItems.product = ProductsNameList
           } else {
             console.log("fail 444")

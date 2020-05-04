@@ -16,13 +16,13 @@
 
             <!-- Card Content -->
             <v-card-text primary-title style="justify-content:center">
-              <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
+              <ValidationProvider v-slot="{ errors }" name="Cidade" rules="required|max:30">
                 <v-text-field label="Cidade" v-model="district.city" :error-messages="errors" required></v-text-field>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
+              <ValidationProvider v-slot="{ errors }" name="Estado" rules="required|max:30">
                 <v-text-field label="Estado" v-model="district.state" :error-messages="errors" required></v-text-field>
               </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" name="city" rules="required|max:30">
+              <ValidationProvider v-slot="{ errors }" name="País" rules="required|max:30">
                 <v-text-field label="País" v-model="district.country" :error-messages="errors" required></v-text-field>
               </ValidationProvider>
             </v-card-text>
@@ -54,8 +54,8 @@ setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir dados nesse campo',
-})
+  message: fieldName =>  'É necessário inserir o campo ' + fieldName,
+});
 
 extend('max', {
   ...max,
@@ -119,8 +119,8 @@ export default {
     },
 
     clear() {
-      this.district.city = ''
-      this.district.state = ''
+      this.district.city = null
+      this.district.state = null
       this.district.country = null
       this.$refs.observer.reset()
     },

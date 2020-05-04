@@ -1,0 +1,39 @@
+swagger: '2.0'
+
+info:
+  description: This is a sample server Petstore server.
+  version: 1.0.0
+  title: Swagger LogApp
+  contact:
+    name: Rafael Morais de Assis
+    url: https://rafanthx13.github.io/
+    email: rafaassis15@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+schemes:
+  - http
+host: localhost:3000
+basePath: /
+
+paths:
+  /city:
+    get:
+      summary: Pegar Cidades
+      description: Retorna uma lista das cidades cadastradas
+      responses:
+        200:
+          description: Uma lista de cidades
+          schema:
+            type: array
+            items:
+              required:
+                - username
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                username:
+                  type: string

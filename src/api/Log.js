@@ -18,11 +18,11 @@ export default class {
   }
 
   static delete(item){
-    return http.delete(log.delete  + item.log_id);
+    return http.delete(log.delete + item.log_id);
   }
 
   static getPosted(body){
-    return http.post(log.getPosted, body);
+    return http.get(`${log.getToSearch}?product=${body.product}&city=${body.city}`, body);
   }
 
 }

@@ -47,19 +47,19 @@ const routes = {
       post: URL + '/city',
       put: URL + '/city/',
       delete: URL + '/city/',
-      getAll: URL +  '/city',
+      getAll: URL + '/city',
       getCities: URL + '/city/city'
     },
     log: {
       post: URL + '/log',
       put: URL + '/log/',
       delete: URL + '/log/',
-      getAll: URL +  '/log',
-      getPosted: URL + '/log/get'
+      getAll: URL + '/log',
+      getToSearch: URL + '/log/search'
     },
     login: {
       login: URL + '/login',
-      register: URL +  '/register',
+      register: URL + '/user',
       auth: URL + '/auth'
     },
     product: {
@@ -90,7 +90,7 @@ const routes = {
 
 export default { user, routes, version };
 
-/* EXAMPLE OF SIMPLE VUE USE:
+/* EXAMPLE OF SIMPLE VUEX USE:
   => CALL getters: this.$store.getters.getUser.codeStatus
   => CALL mutations: this.$store.commit("setCodeStatus", newCodeStatus);
 const user = {

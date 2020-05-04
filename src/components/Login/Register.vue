@@ -13,7 +13,7 @@
                   </v-toolbar>
                   
                   <v-card-text>
-                      <ValidationProvider v-slot="{ errors }" name="rmsil" rules="required|max:30">
+                      <ValidationProvider v-slot="{ errors }" name="Email" rules="required|max:30">
                       <v-text-field label="Email" name="email" v-model="loginForm.email" type="email" :error-messages="errors">
                         <template v-slot:prepend>
                           <v-icon>mdi-email</v-icon>
@@ -21,16 +21,16 @@
                       </v-text-field>
                       </ValidationProvider>
 
-                      <ValidationProvider v-slot="{ errors }" name="user_name" rules="required|max:30">
-                      <v-text-field label="Login" name="user_name" v-model="loginForm.user_name" type="text" :error-messages="errors">
+                      <ValidationProvider v-slot="{ errors }" name="Usuário" rules="required|max:30">
+                      <v-text-field label="Usuário" name="Usuário" v-model="loginForm.user_name" type="text" :error-messages="errors">
                         <template v-slot:prepend>
                           <v-icon>mdi-account</v-icon>
                         </template>
                       </v-text-field>
                       </ValidationProvider>
 
-                      <ValidationProvider v-slot="{ errors }" name="password" rules="required|max:30">
-                      <v-text-field id="password" label="Password" name="password" v-model="loginForm.password" 
+                      <ValidationProvider v-slot="{ errors }" name="Senha" rules="required|max:30">
+                      <v-text-field id="password" label="Senha" name="password" v-model="loginForm.password" 
                         type="password" :error-messages="errors"> 
                         <template v-slot:prepend>
                             <v-icon>mdi-lock</v-icon>
@@ -42,6 +42,9 @@
 
                   <v-card-actions>
                     <v-spacer />
+                    <router-link :to="{ name: 'Login'}">
+                      <v-btn class="mr-3" color="primary">Voltar</v-btn>
+                    </router-link>
                     <v-btn color="primary" @click="submit">Cadastrar</v-btn>
                   </v-card-actions>
 
@@ -67,8 +70,8 @@ setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir dados nesse campo',
-})
+  message: fieldName =>  'É necessário inserir o campo ' + fieldName,
+});
 
 extend('max', {
   ...max,
@@ -103,22 +106,18 @@ export default {
               icon: "success",
               button: "Ok!",
             });
-            
           })
           .catch(err => {
-            console.error(err)
+            console.log(err)
             this.$swal({
               title: "Erro!",
-              text: "Error ao cadastrar usuário",
+              text: "Erro ao cadastrar usuário",
               icon: "error",
               button: "Ok!",
             });
           })
         } 
       })
-      .catch((err) => {
-        console.error(err)
-      });
     },
 
     clear() {

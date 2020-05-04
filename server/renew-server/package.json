@@ -1,0 +1,43 @@
+{
+  "name": "price-log-server",
+  "version": "2.0.0",
+  "description": "BackEnd Server to Application Web LogPriceApp",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "jest",
+    "lint": "eslint src/** test/** --fix",
+    "secure-mode": "jest --watchAll --verbose=true",
+    "production": "pm2 start index.js --name knowledge-backend"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api-rest"
+  ],
+  "author": "Rafael Morais de Assis",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "23.6.0",
+    "supertest": "3.3.0",
+    "nodemon": "1.18.4"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "1.18.3",
+    "consign": "0.1.6",
+    "cors": "2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "0.15.2",
+    "knex-logger": "^0.1.0",
+    "mysql": "^2.18.1",
+    "passport": "0.4.0",
+    "passport-jwt": "4.0.0",
+    "pg": "7.7.1",
+    "pm2": "3.0.4",
+    "swagger-ui-express": "^4.1.4",
+    "yamljs": "^0.3.0"
+  }
+}

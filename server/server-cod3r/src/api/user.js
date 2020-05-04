@@ -1,0 +1,82 @@
+const bcrypt = require('bcrypt-nodejs')
+
+module.exports = app => {
+
+	// Vem diretamente de validation.js, através do consgins
+	const { existsOrError, notExistsOrError, equalsOrError } = app.api.validation
+
+	// ENcriptografa a senha e retorna o hash
+	function encryptPassword (password) => {
+      const salt = bcrypt.genSaltSync(10) // sal, tempero para salgar a senha, é através disso que vai gerar senhas diferentes para um mesmo dado
+      return bcrypt.hashSync(password, salt) // vai gerar o hash da senha
+  }
+
+  // save sala e atualiza usuário
+	const save = async (req, res) => {
+		const user = { ...req.body }
+    if(req.params.id) 
+    	user.id = req.params.id // para dar update
+
+    if(!req.originalUrl.startsWith('/users')) user.admin = false
+    if(!req.user || !req.user.admin) user.admin = false
+
+    // Faz verificaçẽos de valores
+    try {
+        existsOrError(user.name, 'Nome não informado')
+        existsOrError(user.email, 'E-mail não informado')
+        existsOrError(user.password, 'Senha não informada')
+        existsOrError(user.confirmPassword, 'Confirmação de Senha inválida')
+        equalsOrError(user.password, user.confirmPassword,
+            'Senhas não conferem')
+
+        // verifico se o usuário nâo está cadastrado
+        const userFromDB = await app.db('users')
+            .where({ email: user.email }).first()
+
+        if(!user.id) {
+            notExistsOrError(userFromDB, 'Usuário já cadastrado')
+        }
+
+      } catch(msg) {
+          return res.status(400).send(msg) //erro no lado do cliente,
+      }
+
+      // Passou por todas as verificações, então, vai continuar com oprocedimento normal
+      user.password = encryptPassword(user.password)
+      delete user.confirmPassword
+
+      if(user.id) { // é um update
+          app.db('users')
+              .update(user)
+              .where({ id: user.id })
+              .whereNull('deletedAt')
+              .then(_ => res.status(204).send()) // NO content - SUcess
+              .catch(err => res.status(500).send(err)) // PRovavelmetne erro no lado do server já que eu validei umonte de coisa
+      } else { // é um salavar
+          app.db('users')
+              .insert(user)
+              .then(_ => res.status(204).send())
+              .catch(err => res.status(500).send(err))
+      }
+	}
+
+	 const get = (req, res) => {
+        app.db('users')
+            .select('id', 'name', 'email', 'admin')
+            .whereNull('deletedAt')
+            .then(users => res.json(users))
+            .catch(err => res.status(500).send(err))
+    }
+
+    const getById = (req, res) => {
+        app.db('users')
+            .select('id', 'name', 'email', 'admin')
+            .where({ id: req.params.id })
+            .whereNull('deletedAt')
+            .first()
+            .then(user => res.json(user))
+            .catch(err => res.status(500).send(err))
+    }
+
+	return { save }
+}

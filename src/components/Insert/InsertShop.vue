@@ -65,8 +65,8 @@ setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir dados nesse campo',
-})
+  message: fieldName =>  'É necessário inserir o campo ' + fieldName,
+});
 
 extend('max', {
   ...max,

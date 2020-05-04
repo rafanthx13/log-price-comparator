@@ -20,7 +20,7 @@
                   <v-card-text>
                 
                     <ValidationProvider v-slot="{ errors }" name="login" rules="required|max:30">
-                      <v-text-field label="Login" name="login" v-model="loginForm.user_name" 
+                      <v-text-field label="Usuário" name="login" v-model="loginForm.user_name" 
                         type="text" autocomplete="on" :error-messages="errors">
                         <template v-slot:prepend>
                           <v-icon>mdi-account</v-icon>
@@ -29,7 +29,7 @@
                     </ValidationProvider>
 
                     <ValidationProvider v-slot="{ errors }" name="password" rules="required|max:30">
-                      <v-text-field id="password" label="Password" name="password" v-model="loginForm.password" 
+                      <v-text-field id="password" label="Senha" name="password" v-model="loginForm.password" 
                         type="password" autocomplete="on" :error-messages="errors"> 
                         <template v-slot:prepend>
                           <v-icon>mdi-lock</v-icon>
@@ -77,8 +77,8 @@ setInteractionMode('eager')
 
 extend('required', {
   ...required,
-  message: 'É necessário inserir dados nesse campo',
-})
+  message: fieldName =>  'É necessário inserir o campo ' + fieldName,
+});
 
 extend('max', {
   ...max,
