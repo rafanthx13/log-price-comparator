@@ -37,9 +37,3 @@ module.exports = (app) => {
 	return router;
 
 }
-
-// {
-//   "city": "CityTestRE",
-//   "state": "StateTest"
-//   "country": "CountryTest"
-// }

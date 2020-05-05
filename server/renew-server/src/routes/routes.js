@@ -1,5 +1,9 @@
 module.exports = (app) => {
 
+    app.get('/', (req, res) => {
+      res.status(200).send();
+    });
+
 	app.use('/city', app.controller.city);
 
     app.use('/shop', app.controller.shop);

@@ -106,7 +106,7 @@ test('Must not update a non-existent city.', () => {
 
 test('Must not update passing Invalid Data.', () => {
 	return app.db('city')
-		.insert({	...city_test, city: "CityUpdate" })
+		.insert({	...city_test, city: "CityUpdateRe" })
 		.then((city_id) => {
   		request(app).put(`/city/${city_id}`)
 		  	.send({ "t": "ttt"})

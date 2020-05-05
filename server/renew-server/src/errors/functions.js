@@ -54,8 +54,7 @@ module.exports = app => {
 		return [true, true, 'success']
 	}
 
-	// Da pra refatorar esse envio de mensagens
-
+	// Constant with Template Errors Messages
 	let templateMessages = {
 		'success': 'success',
 		'propriety_missing': "'PROPERTY' property is missing",
@@ -69,33 +68,14 @@ module.exports = app => {
 	}
 
 	function verifyDTO(obj, dto){
-
 		let [status, propriety, options] = validateDTO(obj, dto)
 		return errorMessages(status, propriety, options)
-		// if(status)
-		// 	return [status, 'success']
-		// else if (options == 'propriety_missing')
-		// 	return [status, `'${propriety}' property is missing`]
-		// else if (options == 'invalid_value')
-		// 	return [status, `The property '${propriety}' has an invalid value`]
-		// else
-		// 	return [status, `The data sent is absolutely invalid`]
 	}
 
 	function verifyUpdateDTO(obj, dto){
 		let [status, propriety, options] = validateUpdateDTO(obj, dto)
 		return errorMessages(status, propriety, options)
-		// if(status)
-		// 	return [status, 'success']
-		// else if (options == 'propriety_invalid')
-		// 	return [status, `The property '${propriety}' is invalid to sent as data`]
-		// else if (options == 'invalid_value')
-		// 	return [status, `The property '${propriety}' has an invalid value`]
-		// else
-		// 	return [status, `The data sent is absolutely invalid`]
 	}
 
 	return { notExists, exist, validateDTO, verifyDTO, verifyUpdateDTO }
 }
-
-
