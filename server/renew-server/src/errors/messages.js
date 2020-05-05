@@ -5,7 +5,17 @@ module.exports = app => {
     this.message = message;
   }
 
-  return { DuplicateError }
+  function ValidateError(message){
+    this.name = "VALIDATION_ERROR";
+    this.message = message;
+  }
+
+  function NotFoundError(message){
+    this.name = "NOT_FOUND_ERROR";
+    this.message = message;
+  }
+
+  return { DuplicateError, ValidateError, NotFoundError }
 }
 
 /*
@@ -33,5 +43,11 @@ function notExistsOrError(value, msg) {
 function equalsOrError(valueA, valueB, msg) {
   if(valueA !== valueB) throw msg
 }
+
+----
+
+
+if(!account.name) 
+      throw new ValidationError('Nome é um atributo obrigatório.');
   
 */

@@ -1,5 +1,12 @@
 module.exports = (app) => {
 
+		const { ValidateError, DuplicateError, 
+			NotFoundError } = app.errors.messages;
+		const { verifyDTO, exist, 
+			verifyUpdateDTO } = app.errors.functions;
+
+		let city_dto = ['city', 'state', 'country'];
+
 		const getAll = () => {
 			return app.db('city').select()
 		};
@@ -8,32 +15,57 @@ module.exports = (app) => {
 			return app.db('city').select('city').orderBy('city', 'asc')
 		};
 
-		const getAllShopsByCity = (city) => {
-			return app.db('city').select('city').where({ 'city': city }).orderBy('city', 'asc')
-		};
-
+		// to Test
 		const findCityByName = (city) => {
-			// NAO DEETEA: OS INSERT RETORNANO ID QUANDO TEM
 			return app.db('city').where({ city }).select().first();
 		};
 
-		const save = (city) => {
-			// insert retorna Array de ID , uma para cada insert, como só temos um, é só no [0]
-			// O inser no MYSQL volta somente o ID do que foi criado, mas nada, nâo tem como mandar mais ndada
+		const save = async (city) => {
+			let [isValid, msg] = verifyDTO(city, city_dto)
+			if(!isValid)
+				throw new ValidateError(msg)
+
+			if( await checkExistCity(city.city))
+				throw new DuplicateError(`City '${city.city}' already exists in the database.`);
+
 			return app.db('city').insert(city).then( id => {
-				return { ...city, city_id : id[0] }
+				return { city_id : id[0] , ...city }
 			})
 		};
 
-		const update = (id, city) => {
-			// No MySQL retorna [1] ou [0] para o update, nâo tem como retornar o ID ou os dados a nâo ser que faça uma pesquisa denovo
+		const checkExistCity = async (city_name) => {
+			let cityInBD = await app.db('city').where({ city: city_name}).first()
+			return exist(cityInBD)
+		};
+
+		const update = async (id, city) => {
+
+			let [isValid, msg] = verifyUpdateDTO(city, city_dto)
+			if(!isValid)
+				throw new ValidateError(msg)
+
+			if(await checkExistCity(city.city))
+				throw new DuplicateError(`City '${city.city}' already exists in the database.`);
+
 			return app.db('city').where({ city_id: id}).update(city)
+				.then( wasUpdated => {
+					if(!wasUpdated)
+						throw new NotFoundError(`City Not Found`)
+					else
+						return { city_id: id, ...city }
+				});
 		};
 
 		const remove = (id) => {
-			return app.db('city').where({ city_id: id}).del();
+			return app.db('city').where({ city_id: id}).del()
+				.then( wasDeleted => {
+					if(!wasDeleted)
+						throw new NotFoundError(`City Not Found`)
+					return wasDeleted
+				})
 		};
 
-		return { getAll, getOnlyCity, getAllShopsByCity, 
-			findCityByName, save, update, remove };
+		return { getAll, getOnlyCity, findCityByName,
+			save, update, remove };
 }
+

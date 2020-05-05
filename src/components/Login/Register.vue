@@ -107,8 +107,7 @@ export default {
               button: "Ok!",
             });
           })
-          .catch(err => {
-            console.log(err)
+          .catch( () => {
             this.$swal({
               title: "Erro!",
               text: "Erro ao cadastrar usuário",
