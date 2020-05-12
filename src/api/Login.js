@@ -16,7 +16,7 @@ export default class {
   // Infelizmente, as vezes o token não é mandado
   static auth(token){
     return http.get(login.auth, {
-      headers: { Authorization: token }
+      headers: { Authorization: "Bearer " + token }
     });
   }
 

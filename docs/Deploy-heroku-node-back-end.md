@@ -164,4 +164,8 @@ Aonde estiver o projeto backEnd rode
 > heroku logs --tail
 ````
 
+Restar tudo (quando der um erro)
+> heroku dyno:restart
+
+> heroku git:clone -a price-log-app
 
