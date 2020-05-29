@@ -90,7 +90,8 @@ export default {
       loginForm: {
         user_name: '',
         password: '',
-        email: ''
+        email: '',
+        user_type: 'USER'
       }
     }
   },

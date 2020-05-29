@@ -293,8 +293,9 @@ export default {
     confirmEdit(){
       this.$refs.editForm.validate().then( (formIsValid) => {
         if(formIsValid){
-          this.editedItem.price = this.editedItem.price.replace('.','').replace(',','.')
-          Log.put(this.editedItem)
+          let sentItem = JSON.parse(JSON.stringify(this.editedItem));
+          sentItem.price = sentItem.price.replace('.','').replace(',','.')
+          Log.put(sentItem)
             .then( () => {
               this.$swal({
                 title: "Sucesso",

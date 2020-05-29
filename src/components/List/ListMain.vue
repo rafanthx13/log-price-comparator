@@ -4,7 +4,7 @@
 
       <h1 class="main-title">Área de Listagem de Dados</h1>
 
-      <v-row class="d-flex flex-row mt-5">
+      <v-row class="d-flex flex-row mt-5"  style="justify-content: center;">
 
         <v-card outlined @click="go_to('List City')" class="mx-10 card-animated mb-2 responsive-cards">
           <v-list-item three-line>
@@ -40,7 +40,7 @@
           </v-list-item>
         </v-card>
 
-        <v-card outlined @click="go_to('List Log')" class="mx-10 card-animated mb-2 responsive-cards">
+        <v-card outlined @click="go_to('List Log')" class="mx-10 card-animated mb-2 responsive-cards resp">
           <v-list-item three-line>
             <v-list-item-content class="icon-options">
               <div class="overline mb-4">
@@ -90,5 +90,12 @@
     width: 100%;
   }
 }
+
+@media screen and (min-width: 600px) {
+  .resp {
+    margin-right: 80px !important;  
+  }
+}
+
 
 </style>

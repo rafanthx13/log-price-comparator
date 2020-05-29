@@ -42,15 +42,21 @@
                   <v-card-actions>
                     <v-spacer />
                     <v-btn color="primary" style="margin-right: 10px;" @click="submit">Login</v-btn>
-                    <router-link to="/register" >
+                    <!-- <router-link to="/register" >
                       <v-btn color="primary">Cadastre-se</v-btn>
-                    </router-link>
+                    </router-link> -->
+                    <v-btn color="primary" style="margin-right: 10px;" @click="quest">Visitante</v-btn>
                   </v-card-actions>
 
               </form>
             </ValidationObserver>
 
             </v-card>
+
+            <div class="credits mt-3">
+              <span>Desenvolvido por <a href="https://rafanthx13.github.io/">Rafael</a></span>
+              <span> Imagem de <a href="https://pixabay.com/pt/users/Pexels-2286921/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1852945">Pexels</a> por <a href="https://pixabay.com/pt/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1852945">Pixabay</a></span>
+            </div>
 
             <notifications group="error-login" position="top center" style="top: 10px;"/>
 
@@ -103,6 +109,10 @@ export default {
         user_name: '',
         password: ''
       },
+      questLogin: {
+        user_name: 'visitante',
+        password: 'visitante123'
+      },
       spinner: false
       
     }
@@ -139,6 +149,24 @@ export default {
         }
       }
     )},
+
+    quest(){
+      this.spinner = true;
+      Login.login(this.questLogin).then( (result) => {
+        localStorage.setItem('token', result.data.token);
+        this.$store.commit("setUser", result.data);
+        if (localStorage.getItem('token') != null){
+          this.spinner = false;
+          this.$router.push({name: 'Home'})
+        }
+      })
+      .catch( () => {
+        this.spinner = false;
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        this.error_notify('Erro de Login', 'Usuário o Senha não encontrados')
+      })
+    },
     
     error_notify(title, text, duration = 7000){
       this.$notify({
@@ -166,6 +194,20 @@ export default {
   left: 0;
   opacity: 1;
   z-index: 500000999;
+}
+
+#inspire {
+  background-image: url("../../assets/imgs/beach-1852945_1280.jpg");
+  background-position: center top;
+  background-size: 100% auto;
+}
+
+.credits {
+  width: max-content;
+  background-color: white; 
+  background-color: rgba(247, 247, 247, 0.52); 
+  border-radius: 20px; 
+  padding: 5px;
 }
 
 </style>

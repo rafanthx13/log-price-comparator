@@ -239,16 +239,24 @@ export default {
         if(formIsValid){
           City.put(this.editedItem)
           .then( () => {
-            this.emitSwal("Sucesso!", "A cidade foi editada com sucesso!", "success");
-            Object.assign(this.rows[this.editedIndex], this.editedItem)
-            this.editClose();
+            this.$swal({
+              title: "Sucesso!",
+              text: "A cidade foi editada com sucesso!",
+              icon: "success",
+              button: "Ok!",
+            }).then( value => {
+              if(value){
+                Object.assign(this.rows[this.editedIndex], this.editedItem)
+                this.editClose();
+              }
+            });
           })
           .catch( err => {
             let msg = err.status == 404  
               ? "A Cidade já está sendo referenciada em outra tabela e NÃO PODE SER EDITADA" 
               : "Erro ao Editar cidade";
-            this.emitSwal("Erro!", msg, "error");
-            this.deleteClose();
+            this.emitSwal("Erro!", msg, "error")
+              .then( () => this.editClose());
           });
         } else {
           this.$notify({
@@ -265,21 +273,27 @@ export default {
     confirmDelete(){
       City.delete(this.deletedItem)
         .then( () => {
-          this.rows.splice(this.deletedIndex, 1)
-          this.emitSwal("Sucesso!", "A cidade foi deletada com sucesso!", "success");
-          this.editClose();
+          this.$swal({
+            title: "Sucesso!",
+            text: "A cidade foi deletada com sucesso!",
+            icon: "success",
+            button: "Ok!",
+          }).then( () => {
+            this.rows.splice(this.deletedIndex, 1)
+            this.deleteClose(); 
+          });
         })
         .catch( err => {
           let msg = err.status == 404 
             ? "A Cidade já está sendo referenciada em outra tabela e NÃO PODE SER DELETADA" 
             : "Erro ao Deletar cidade";
-          this.emitSwal("Erro!", msg, "error");
-          this.deleteClose();
+          this.emitSwal("Erro!", msg, "error")
+            .then( () => this.deleteClose());
         });
     },
 
     emitSwal(title, text, icon){
-      this.$swal({
+      return this.$swal({
         title: title,
         text: text,
         icon: icon,

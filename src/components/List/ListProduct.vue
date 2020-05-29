@@ -227,16 +227,19 @@ export default {
         if(formIsValid){
           Product.put(this.editedItem)
             .then( () => {
-              this.emitSwal("Sucesso!", "O produto foi editado com sucesso!", "success");
-              Object.assign(this.rows[this.editedIndex], this.editedItem)
-              this.editClose();
+              this.emitSwal("Sucesso!", "O produto foi editado com sucesso!", "success")
+                .then( () => {
+                  Object.assign(this.rows[this.editedIndex], this.editedItem)
+                  this.editClose();
+                });
             })
             .catch( err => {
+              console.log(err.message)
               let msg = err.response.status == 404  
                 ? "O produto já está sendo referenciada em outra tabela e NÃO PODE SER EDITADO" 
                 : "Erro ao Editar produto";
-              this.emitSwal("Erro!", msg, "error");
-              this.deleteClose();
+              this.emitSwal("Erro!", msg, "error")
+                .then( () => this.editClose());
             });
         } else {
           this.$notify({
@@ -253,21 +256,24 @@ export default {
     confirmDelete(){
       Product.delete(this.deletedItem)
         .then( () => {
-          this.rows.splice(this.deletedIndex, 1)
-          this.emitSwal("Sucesso!", "O produto foi deletado com sucesso!", "success");
-          this.editClose();
+          this.emitSwal("Sucesso!", "O produto foi deletado com sucesso!", "success")
+            .then( () => {
+              this.rows.splice(this.deletedIndex, 1)
+              this.deleteClose();  
+            });
         })
         .catch( err => {
           let msg = err.response.status == 404 
             ? "O produto já está sendo referenciada em outra tabela e NÃO PODE SER DELETADO" 
             : "Erro ao Deletar produto";
-          this.emitSwal("Erro!", msg, "error");
-          this.deleteClose();
+          this.emitSwal("Erro!", msg, "error")
+            .then( () => this.deleteClose());
         });
     },
 
     emitSwal(title, text, icon){
-      this.$swal({
+      // retorna uma promisse que pode ser usada com then
+      return this.$swal({
         title: title,
         text: text,
         icon: icon,
