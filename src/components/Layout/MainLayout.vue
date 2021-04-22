@@ -26,14 +26,16 @@
         </v-list-item>
 
         <!-- Inset Data -->
-        <v-list-item @click="go_to('Insert Main')">
-          <v-list-item-action>
-            <v-icon>mdi-plus-box-outline</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Inserir</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <template v-if="this.$store.getters.getUser.user_type != 'QUEST'">
+          <v-list-item @click="go_to('Insert Main')">
+            <v-list-item-action>
+              <v-icon>mdi-plus-box-outline</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Inserir</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
 
         <!-- Log -->
         <v-list-item @click="go_to('Log')">
@@ -73,7 +75,7 @@
     <!-- Header Bar on Top -->
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>LogPrice App</v-toolbar-title>
+      <v-toolbar-title>LogPrice App {{this.$store.getters.getUser.user_type}}</v-toolbar-title>
 
       <v-spacer /> <!-- Espaço para jogar pro lado -->
 

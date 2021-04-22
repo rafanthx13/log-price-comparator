@@ -260,12 +260,23 @@ export default {
     submit() {
       // Metodo do componente que retorna um Promisse que
       // tem como retorno 'result' :: Boolean da validação
+
+      function reverse_day_month(varchar_date){
+        return varchar_date.substr(3, 2)+"/"+varchar_date.substr(0, 2)+"/"+varchar_date.substr(6, 15);
+      }
+
       this.$refs.observer.validate()
         .then(result => {
           this.logData.date = moment().format("YYYY-MM-DD HH:mm:ss")
           if (result) {
             Log.getPosted(this.logData).then(result => {
                 this.logs = result.data.length == 0 ? null : result.data
+                // Formata data
+                this.logs = this.logs.map( function(element) {
+                  element['date'] = reverse_day_month(element['date'])
+                  return element
+                })
+                console.log(this.logs)
                 // O resultado, mesmo que seja um array vazio, nâo é 
                 // um array comun, é um array com prpriedades de JS difenrete
                 // Então, use o criterio de lenght pra saber se deu certo ou não

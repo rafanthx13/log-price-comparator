@@ -81,6 +81,9 @@ Depois use esse  valor `mysql` pra confugurar
 
 ````
 $ heroku config:set DATABASE_URL='mysql://b7e2437887xxxa:0200xxx6@us-cdbr-iron-east-02.cleardb.net/heroku_7643ec736354xxx?reconnect=true'
+````
+
+
 
 # Vai gerar algo como
 Setting DATABASE_URL and restarting ⬢ bezkoder-nodejs-mysql... done, v6
@@ -95,6 +98,7 @@ module.exports = {
   PASSWORD: "0200xxx6",
   DB: "heroku_7643ec736354xxx"
 };
+
 ````
 
 A porta padão é `DB_PORT=3306`, a mesma do MYSQL default

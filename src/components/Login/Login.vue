@@ -53,10 +53,10 @@
 
             </v-card>
 
-            <div class="credits mt-3">
+            <!-- <div class="credits mt-3">
               <span>Desenvolvido por <a href="https://rafanthx13.github.io/">Rafael</a></span>
               <span> Imagem de <a href="https://pixabay.com/pt/users/Pexels-2286921/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1852945">Pexels</a> por <a href="https://pixabay.com/pt/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1852945">Pixabay</a></span>
-            </div>
+            </div> -->
 
             <notifications group="error-login" position="top center" style="top: 10px;"/>
 
