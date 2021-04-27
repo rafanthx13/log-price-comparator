@@ -1,7 +1,5 @@
 # Price-Log-Comparator
 
-**06/05/2020 - Desito de continuar com esse projeto por nâo conseguir fazer um deployx do lavo do servidor que fique de pé**
-
 App que possui o preço de certas categorias locais (onde os próprios usuários colocam os preço). Serve para saber qual o lugar está mais barato sem sair de casa.
 
 **Por que usar**: Pois você obtem o preço das coisas antes de ir lá; Você pode saber se o preço de um lugar está mais caro/barato que o normal da redondeza; Saber se os preços de certos itens estâo aumentado ou não;

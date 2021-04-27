@@ -75,7 +75,7 @@
     <!-- Header Bar on Top -->
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>LogPrice App {{this.$store.getters.getUser.user_type}}</v-toolbar-title>
+      <v-toolbar-title>PriceLog App {{ this.$store.getters.getUser.user_type == 'admin' ? 'Admin' : ''}}</v-toolbar-title>
 
       <v-spacer /> <!-- Espaço para jogar pro lado -->
 
@@ -115,7 +115,7 @@
 
     <!-- Footer -->
     <v-footer color="indigo" app>
-      <span class="white--text">&copy; 2020 | {{ this.$store.getters.getVersion.version }}</span>
+      <span class="white--text">&copy; 2021</span>
     </v-footer>
 
   </v-app>

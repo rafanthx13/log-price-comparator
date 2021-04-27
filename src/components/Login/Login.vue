@@ -10,8 +10,8 @@
             <v-card class="elevation-12" style="margin-bottom: 30%;">
 
               <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Log-Comparator App</v-toolbar-title>
-                <span style="margin-left: 10px;">&nbsp;&nbsp; {{ this.$store.getters.getVersion.version }}</span>
+                <v-toolbar-title>PriceLog App</v-toolbar-title>
+                <span style="margin-left: 10px;">&nbsp;&nbsp;</span>
               </v-toolbar>
               
               <ValidationObserver ref="observer">
